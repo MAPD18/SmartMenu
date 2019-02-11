@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SmartMenu for Restaurants</string>
+    <bool name="feature_a_enabled">false</bool>
 </resources>

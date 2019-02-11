@@ -43,4 +43,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.firebase:firebase-auth:16.0.1'
     implementation 'com.google.firebase:firebase-core:16.0.1'
+
+    implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:2.1.0'
+    implementation 'com.github.stephanenicolas.toothpick:smoothie-androidx:2.1.0'
+    annotationProcessor 'com.github.stephanenicolas.toothpick:toothpick-compiler:2.1.0'
 }
