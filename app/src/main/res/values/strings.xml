@@ -1,3 +1,37 @@
 <resources>
     <string name="app_name">SmartMenu</string>
+
+    <!--Prompts and texts-->
+    <string name="welcome_text">Welcome to customer. Please sign in before using customer.</string>
+    <string name="welcome_text_on_login">You have successfully logged in as %1$s.</string>
+    <string name="choose_prompt">Who are you today?</string>
+    <string name="prompt_choose_location1">Click on the map to choose your location.</string>
+    <string name="prompt_choose_location2">Click on the green button to confirm.</string>
+    <string name="button_finish_delivery">Finish Delivery</string>
+    <string name="button_pickup_delivery">Delivery Picked Up</string>
+    <string name="button_cancel_delivery">Cancel Delivery</string>
+    <string name="order_ordered_by">Ordered by: %1$s</string>
+    <string name="order_delivered_by">Delivered by: %1$s</string>
+    <string name="order_menuitem_list">Order Items:\n%1$s</string>
+    <string name="order_price">Price: %1$s</string>
+
+    <!--Toast messages-->
+    <string name="err_firebase_unavailable">Unable to access Firebase. Please try again later.</string>
+    <string name="err_user_failed_to_authenticate">customer is unable to authenticate you. Please sign-in again.</string>
+    <string name="err_user_not_authenticated">You need to be signed-in to access this feature.</string>
+
+    <string name="about_page_text">
+        The SmartMenu for Restaurants will consist of the following features: \n
+        Authentication\n
+        Menu management\n
+        Configure Bluetooth broadcast service\n
+        Register deals\n
+        Team:\n
+        Jose Filho - 301005491 - jaraujo8@my.centennialcollege.ca\n
+        Liam Salehi - 300906321 - hsalehi2@my.centennialcollege.ca\n
+        Rodrigo Silva - 300993648 - rvieirad@my.centennialcollege.ca\n
+        Thayllan Anacleto - 300973606 - tanaclet@my.centennialcollege.ca\n
+        Oguz Bayral - 301029119 - obayral@my.centennialcollege.ca\n
+    </string>
+    <string name="default_web_client_id_google">484410979258-7ppcvjd498nk35h3hm87lb59220a129v.apps.googleusercontent.com</string>
 </resources>

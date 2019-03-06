@@ -10,13 +10,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".customer.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="ca.mapd.capstone.smartmenu.customer.customer_activity.RestaurantListActivity" />
+        <activity android:name="ca.mapd.capstone.smartmenu.customer.AboutPageActivity"></activity>
+
+
     </application>
 
 </manifest>
