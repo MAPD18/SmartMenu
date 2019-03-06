@@ -8,4 +8,8 @@ public class Constants {
     public static final ParcelUuid CHARACTERISTIC_UUID = ParcelUuid.fromString("C32F7F7E-3E79-4A79-B04C-A392876A9959");
     public static final String TAG = "jabdia";
 
+    public static final String CHANNEL_ID = "smart_menu_channel";
+    public static final String CHANNEL_NAME = "SmartMenu Notification";
+    public static final String CHANNEL_DESCRIPTION = "Notification for Smart Menu";
+
 }

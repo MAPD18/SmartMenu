@@ -1,5 +1,6 @@
 package ca.mapd.capstone.smartmenu.matching;
 
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
@@ -9,23 +10,33 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 
-import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.List;
 
 import ca.mapd.capstone.smartmenu.activities.MainActivity;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class MyBluetoothGattCallback extends BluetoothGattCallback {
     private final Context mContext;
 
     private final String SUBTAG = "MyBTGattCallback";
+    private SparseBooleanArray deviceProcessed = new SparseBooleanArray();
+    private SparseBooleanArray deviceServiceDiscovered = new SparseBooleanArray();
+    private SparseBooleanArray deviceProcessCompleted = new SparseBooleanArray();
+
+    private NotificationManager notificationMgr;
+    private NotificationDecorator notificationDecorator;
 
 
     public MyBluetoothGattCallback(Context context) {
         mContext = context;
+        notificationMgr = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        notificationDecorator = new NotificationDecorator(context, notificationMgr);
     }
 
     // BluetoothGattCallback
@@ -36,8 +47,11 @@ public class MyBluetoothGattCallback extends BluetoothGattCallback {
                         + " state = " + String.valueOf(newState));
 
         boolean discoveryHasBeenStarted = false;
-        if (newState == BluetoothProfile.STATE_CONNECTED)
+        if (newState == BluetoothProfile.STATE_CONNECTED) {
+            deviceProcessed.append(bluetoothGatt.getDevice().getAddress().hashCode(), true);
+            if (deviceProcessCompleted.get(bluetoothGatt.getDevice().getAddress().hashCode())) return;
             discoveryHasBeenStarted = bluetoothGatt.discoverServices();
+        }
 
         if (!discoveryHasBeenStarted) {
             connectGattInMainLoop(bluetoothGatt.getDevice());
@@ -57,6 +71,9 @@ public class MyBluetoothGattCallback extends BluetoothGattCallback {
             Log.d(Constants.TAG + SUBTAG, "nUnspecified address.");
             return;
         }
+
+        if (deviceProcessCompleted.get(device.getAddress().hashCode())) return;
+        if (deviceProcessed.get(device.getAddress().hashCode())) return;
 
         connectGattInMainLoop(device);
     }
@@ -105,6 +122,7 @@ public class MyBluetoothGattCallback extends BluetoothGattCallback {
                     String uuidCharacteristic = gattCharacteristic.getUuid().toString().toUpperCase();
                     if (Constants.CHARACTERISTIC_UUID.toString().toUpperCase().equals(uuidCharacteristic)) {
                         Log.d(Constants.TAG + SUBTAG, "readCharacteristic: " + uuidCharacteristic);
+                        deviceServiceDiscovered.append(bluetoothGatt.getDevice().getAddress().hashCode(), true);
                         bluetoothGatt.readCharacteristic(gattCharacteristic);
                     }
                 }
@@ -147,6 +165,8 @@ public class MyBluetoothGattCallback extends BluetoothGattCallback {
             Intent intent = new Intent(MainActivity.MenuBroadcastReceiver.MENU_INTENT_FILTER);
             intent.putExtra(MainActivity.MenuBroadcastReceiver.KEY_MENU_ID, menuId);
             mContext.sendBroadcast(intent);
+            deviceProcessCompleted.append(bluetoothGatt.getDevice().getAddress().hashCode(), true);
+            notificationDecorator.displaySimpleNotification("New Menu Discovered nearby!", menuId);
         }
     }
 
