@@ -1,3 +1,4 @@
 <resources>
     <bool name="feature_a_enabled">true</bool>
+    <bool name="is_restaurant_app">false</bool>
 </resources>
