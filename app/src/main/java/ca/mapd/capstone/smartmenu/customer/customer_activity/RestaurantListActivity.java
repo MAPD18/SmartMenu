@@ -53,12 +53,6 @@ public class RestaurantListActivity extends AppCompatActivity {
         m_ProgressBar = (ProgressBar) findViewById(R.id.loadingBar);
         m_ProgressBar.setIndeterminate(true);
 
-        //create new restaurants
-        Restaurant maccas = new Restaurant("Macca's", "Princes Hwy");
-        MenuItem cheeseburger = new MenuItem("Cheeseburger", "ABC", 13);
-        maccas.addItem(cheeseburger);
-        m_RestaurantList.add(maccas);
-
         //Firebase restaurants
         m_RestaurantRef = FirebaseDatabase.getInstance().getReference(Restaurant.RESTAURANT_KEY);
         m_RestaurantRefCEL = new ChildEventListener() {
