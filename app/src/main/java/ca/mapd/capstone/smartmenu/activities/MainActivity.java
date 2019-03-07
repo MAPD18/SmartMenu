@@ -3,8 +3,6 @@ package ca.mapd.capstone.smartmenu.activities;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanResult;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +14,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView hello;
     private BluetoothAdapter bluetoothAdapter;
     private MenuBroadcastReceiver menuBroadcastReceiver;
-
-    @Inject
-    IUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,27 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
         menuBroadcastReceiver = new MenuBroadcastReceiver();
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         hello = findViewById(R.id.hello);
-        hello.setText(mUser.getFlavor());
-
-        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            hello.setText(mUser.getFlavor() + " - " + user.getDisplayName());
-        } else {
-            // Choose authentication providers
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                    new AuthUI.IdpConfig.PhoneBuilder().build(),
-                    new AuthUI.IdpConfig.GoogleBuilder().build());
-
-            // Create and launch sign-in intent
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .build(),
-                    RC_SIGN_IN);
-        }*/
+        hello.setText("Hello, " + user.getDisplayName());
 
     }
 
@@ -113,26 +87,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(menuBroadcastReceiver);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                hello.setText(mUser.getFlavor() + " - " + user.getDisplayName());
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

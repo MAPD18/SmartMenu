@@ -86,6 +86,7 @@ public class BluetoothManager implements BluetoothAdapter.LeScanCallback {
         if (!mBluetoothAdapter.isEnabled() && !startForce) return false;
         if (!mBluetoothAdapter.enable()) return false;
 
+        Log.d(Constants.TAG, "start isRestaurantApp: " + isRestaurantApp);
         if (isRestaurantApp)
             startServer(menuId);
         else

@@ -20,6 +20,7 @@ public class MatchingService extends Service {
 
     public static void startMatchingWithBluetooth(Context context, boolean startBluetoothForce) {
         isRestaurantApp = context.getResources().getBoolean(R.bool.is_restaurant_app);
+        Log.d(Constants.TAG, "startMatchingWithBluetooth: " +isRestaurantApp);
         Intent intent = new Intent(context, MatchingService.class);
         intent.putExtra(MatchingService.USE_BLUETOOTH, true);
         intent.putExtra(MatchingService.START_BLUETOOTH_FORCE, startBluetoothForce);
@@ -28,6 +29,7 @@ public class MatchingService extends Service {
 
     public static void stopMatchingWithBluetooth(Context context) {
         isRestaurantApp = context.getResources().getBoolean(R.bool.is_restaurant_app);
+        Log.d(Constants.TAG, "stopMatchingWithBluetooth: " +isRestaurantApp);
         Intent intent = new Intent(context, MatchingService.class);
         context.stopService(intent);
     }
@@ -35,6 +37,7 @@ public class MatchingService extends Service {
     @Override
     public void onCreate() {
         Log.d(Constants.TAG, "MatchingService: onCreate");
+        isRestaurantApp = getApplicationContext().getResources().getBoolean(R.bool.is_restaurant_app);
     }
 
     @Override
