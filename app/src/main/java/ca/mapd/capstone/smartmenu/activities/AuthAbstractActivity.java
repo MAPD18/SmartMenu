@@ -1,8 +1,7 @@
-package ca.mapd.capstone.smartmenu.customer;
+package ca.mapd.capstone.smartmenu.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,17 +13,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import ca.mapd.capstone.smartmenu.R;
 import ca.mapd.capstone.smartmenu.customer.helper.FirebaseKeylist;
@@ -64,7 +61,7 @@ public abstract class AuthAbstractActivity
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null){
-                    onLogin();
+                    onLoginSuccessful();
                 }
                 else{
                     onNotLoggedIn();
@@ -74,10 +71,13 @@ public abstract class AuthAbstractActivity
         m_Auth.addAuthStateListener(m_AuthStateListener);
     }
 
-    protected void onLogin(){
+    protected void onLoginSuccessful(){
         // this method is called when the activity detects that the user is logged in
         // note that devs can override this method and specify custom behavior on login
-        checkUserHasActiveOrder();
+    }
+
+    protected void onLoginFailed(){
+
     }
 
     protected void onNotLoggedIn(){
@@ -103,23 +103,22 @@ public abstract class AuthAbstractActivity
         startActivityForResult(startIntent, RC_SIGN_IN); // start Google's default Sign-In activity
     }
 
-    private void checkUserHasActiveOrder(){
-        // method checks whether or not the user has an active order
-        // @precondition user must be authenticated
-        Log.d("AuthAbstract", "Checking if user has any active order...");
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(FirebaseKeylist.USER_PROFILE);
-        try {
-            String userUID = m_Auth.getCurrentUser().getUid(); //assumes that user is authenticated
-
-        }
-        catch (NullPointerException e){
-            Log.e("Auth", "Logic error! checkUserHasActiveOrder called when user is not logged in!", e);
-        }
-    }
-
-
-    protected void onNotHavingActiveOrder(){
-        //empty method which can be overridden should the acivity wants to handle it
+    protected void signInWithEmailAndPassword(String email, String password) {
+        m_Auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            buildUserProfile();
+                        }
+                    }
+                })
+        .addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onLoginFailed();
+            }
+        });
     }
 
     private void handleSignInResult(GoogleSignInResult result){

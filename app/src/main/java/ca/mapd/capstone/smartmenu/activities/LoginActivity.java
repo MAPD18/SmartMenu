@@ -1,77 +1,82 @@
 package ca.mapd.capstone.smartmenu.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
+import com.google.android.gms.common.SignInButton;
 
 import ca.mapd.capstone.smartmenu.R;
-import ca.mapd.capstone.smartmenu.interfaces.IUser;
+import ca.mapd.capstone.smartmenu.customer.AboutPageActivity;
+import ca.mapd.capstone.smartmenu.customer.customer_activity.RestaurantListActivity;
 
-import static ca.mapd.capstone.smartmenu.activities.MainActivity.RC_SIGN_IN;
-
-public class LoginActivity extends AppCompatActivity {
-
-    TextView loginHello;
+public class LoginActivity extends AuthAbstractActivity implements View.OnClickListener {
+    /*
+    * Starting point of the application, has buttons which lead to places
+    * Note that most essential activity will implement AuthAbstractActivity*/
+    SignInButton googleSignInButton;
+    Button loginButton;
+    TextInputEditText login, password;
+    TextView errorMessage;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginHello = findViewById(R.id.loginHello);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            loginHello.setText(R.string.app_name);
+        if (m_Auth.getCurrentUser() != null) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
-        } else {
-            // Choose authentication providers
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                    new AuthUI.IdpConfig.GoogleBuilder().build());
-
-            // Create and launch sign-in intent
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .build(),
-                    RC_SIGN_IN);
         }
+
+        init();
+    }
+
+    private void init() {
+        googleSignInButton = findViewById(R.id.signInButton);
+        loginButton = findViewById(R.id.loginButton);
+        login = findViewById(R.id.login);
+        password = findViewById(R.id.password);
+        errorMessage = findViewById(R.id.errorMessage);
+        progressBar = findViewById(R.id.progressBar);
+
+        googleSignInButton.setOnClickListener(this);
+        loginButton.setOnClickListener(this);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onLoginSuccessful() {
+        progressBar.setVisibility(View.GONE);
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
 
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
+    @Override
+    protected void onNotLoggedIn() {
 
-            if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                loginHello.setText(R.string.app_name);
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                // ...
-            } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
+    }
+
+    @Override
+    protected void onLoginFailed() {
+        errorMessage.setText(R.string.login_or_password_invalid_message);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.loginButton:
+                signInWithEmailAndPassword(login.getText().toString(), password.getText().toString());
+                break;
+            case R.id.signInButton:
+                googleSignIn();
+                break;
         }
+        progressBar.setVisibility(View.VISIBLE);
     }
 }

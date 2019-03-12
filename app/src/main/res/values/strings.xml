@@ -51,4 +51,7 @@
     <string name="google_sign_in_button_text">Sign In with Google</string>
 
     <bool name="is_restaurant_app">false</bool>
+
+    <string name="login_or_password_invalid_message">Login or Password Invalid</string>
+    <string name="restaurant_list_button_text">See Restaurants</string>
 </resources>

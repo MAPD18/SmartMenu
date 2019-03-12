@@ -10,13 +10,13 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 
 import java.util.List;
 
+import ca.mapd.capstone.smartmenu.activities.LoginActivity;
 import ca.mapd.capstone.smartmenu.activities.MainActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;

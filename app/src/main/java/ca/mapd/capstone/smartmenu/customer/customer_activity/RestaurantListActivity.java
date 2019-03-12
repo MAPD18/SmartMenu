@@ -25,7 +25,7 @@ import ca.mapd.capstone.smartmenu.customer.models.MenuItem;
 import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
 
 public class RestaurantListActivity extends AppCompatActivity {
-    private ArrayList<Restaurant> m_RestaurantList; /*this holds the list of Monsters which will be displayed*/
+    private ArrayList<Restaurant> m_RestaurantList; /*this holds the list of Restaurants which will be displayed*/
     private HashMap<String, Integer> m_RestaurantKeyMap; //neat little hack to keep track of where our restaurant resides in the restaurantlist
     private RecyclerView m_RecyclerView; // our RecyclerView instance
     private LinearLayoutManager m_LinearLayoutManager; //the LayoutManager used by the RecyclerView
