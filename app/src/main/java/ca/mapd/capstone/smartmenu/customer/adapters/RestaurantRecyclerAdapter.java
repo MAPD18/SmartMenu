@@ -24,11 +24,13 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
 
     public static class RestaurantHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView m_cRestaurantNameView;
+        private TextView m_cRestaurantAddressView;
         private Restaurant m_cRestaurant;
 
         public RestaurantHolder(View v){
             super(v);
             m_cRestaurantNameView = (TextView) v.findViewById(R.id.recyclerRestaurantShortTextView);
+            m_cRestaurantAddressView = (TextView) v.findViewById(R.id.recyclerAddressShortTextView);
             v.setOnClickListener(this);
         }
 
@@ -45,7 +47,9 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
             // the binded Restaurant's detail will be displayed in the cell/row of the RecyclerView
             // :param Restaurant: a Restaurant which will be displayed on the RecyclerView
             m_cRestaurant = Restaurant;
-            m_cRestaurantNameView.setText(Restaurant.toString());
+            m_cRestaurantNameView.setText(Restaurant.m_Name);
+            m_cRestaurantAddressView.setText(Restaurant.m_Address);
+
         }
     }
 
