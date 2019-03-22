@@ -14,6 +14,7 @@ public class Restaurant implements Parcelable{
     public String m_Name;
     public String m_Address;
     public ArrayList<MenuItem> m_Menu;
+    public boolean isAvailable;
 
     public Restaurant(){
 

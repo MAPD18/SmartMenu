@@ -1,6 +1,7 @@
 package ca.mapd.capstone.smartmenu.customer.customer_activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,11 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import ca.mapd.capstone.smartmenu.R;
 import ca.mapd.capstone.smartmenu.customer.adapters.RestaurantRecyclerAdapter;
-import ca.mapd.capstone.smartmenu.customer.models.MenuItem;
 import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
 
 public class RestaurantListActivity extends AppCompatActivity {
@@ -34,6 +36,7 @@ public class RestaurantListActivity extends AppCompatActivity {
     private ChildEventListener m_RestaurantRefCEL;
     private LinearLayout m_LinearLayout;
     private ProgressBar m_ProgressBar;
+    private ArrayList<String> m_BlutoothIDs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +56,38 @@ public class RestaurantListActivity extends AppCompatActivity {
         m_ProgressBar = (ProgressBar) findViewById(R.id.loadingBar);
         m_ProgressBar.setIndeterminate(true);
 
+        //Get Restaurant IDs sent via Bluetooth from previous activity
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            m_BlutoothIDs = bundle.getStringArrayList("RESTAURANT_ID_LIST");
+        }
+        if (m_BlutoothIDs == null) {
+            m_BlutoothIDs = new ArrayList<>();
+        }
+
         //Firebase restaurants
         m_RestaurantRef = FirebaseDatabase.getInstance().getReference(Restaurant.RESTAURANT_KEY);
         m_RestaurantRefCEL = new ChildEventListener() {
             // listener populates the restaurant list with data as it comes and goes
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
                 // when a restaurant has been added into the database
-                m_RestaurantList.add(dataSnapshot.getValue(Restaurant.class));
-                m_RestaurantKeyMap.put(dataSnapshot.getKey(), m_RestaurantList.size() - 1);
+                Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
+                String key = dataSnapshot.getKey();
+                if (restaurant != null) {
+                    if (m_BlutoothIDs.contains(key)){
+                        restaurant.isAvailable = true;
+                        m_RestaurantList.add(0, restaurant);
+                    } else {
+                        restaurant.isAvailable = false;
+                        m_RestaurantList.add(restaurant);
+                    }
+                    m_RestaurantKeyMap.put(key, m_RestaurantList.size() - 1);
+                }
                 m_Adapter.notifyDataSetChanged();
                 m_ProgressBar.setVisibility(View.GONE);
                 m_LinearLayout.setVisibility(View.VISIBLE);
+
             }
 
             @Override
@@ -96,6 +119,8 @@ public class RestaurantListActivity extends AppCompatActivity {
                 toast.show();
             }
         };
+
+
 
         //set adapter
         m_Adapter = new RestaurantRecyclerAdapter(m_RestaurantList);
