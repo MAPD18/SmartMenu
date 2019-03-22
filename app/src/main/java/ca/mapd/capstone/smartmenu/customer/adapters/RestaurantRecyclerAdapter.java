@@ -2,6 +2,9 @@ package ca.mapd.capstone.smartmenu.customer.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +26,14 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
     // recycler adapter for restaurants
 
     public static class RestaurantHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private CardView m_cRestaurantCardView;
         private TextView m_cRestaurantNameView;
         private TextView m_cRestaurantAddressView;
         private Restaurant m_cRestaurant;
 
         public RestaurantHolder(View v){
             super(v);
+            m_cRestaurantCardView = (CardView) v.findViewById(R.id.cardview);
             m_cRestaurantNameView = (TextView) v.findViewById(R.id.recyclerRestaurantShortTextView);
             m_cRestaurantAddressView = (TextView) v.findViewById(R.id.recyclerAddressShortTextView);
             v.setOnClickListener(this);
@@ -47,6 +52,10 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
             // the binded Restaurant's detail will be displayed in the cell/row of the RecyclerView
             // :param Restaurant: a Restaurant which will be displayed on the RecyclerView
             m_cRestaurant = Restaurant;
+            if (Restaurant.isAvailable)
+                m_cRestaurantCardView.setCardBackgroundColor(Color.parseColor("#26B4B0"));
+            else
+                m_cRestaurantCardView.setCardBackgroundColor(Color.parseColor("#AEAEAE"));
             m_cRestaurantNameView.setText(Restaurant.m_Name);
             m_cRestaurantAddressView.setText(Restaurant.m_Address);
 
@@ -74,9 +83,9 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
                     results.values = m_RestaurantList;
                     results.count = m_RestaurantList.size();
                 }
-                else{
+                else {
                     ArrayList<Restaurant> filterResultsData = new ArrayList<Restaurant>();
-                    for(int i = 0; i < m_RestaurantList.size(); i++){
+                    for(int i = 0; i < m_RestaurantList.size(); i++) {
                         //this is where we filter stuffs
                         if (m_RestaurantList.get(i).toString().toLowerCase()
                                 .contains(constraint.toString().toLowerCase())){

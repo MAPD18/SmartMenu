@@ -81,9 +81,9 @@ public class MenuItemRecyclerAdapter
         }
     }
 
-    public MenuItemRecyclerAdapter(Restaurant restaurant){
+    public MenuItemRecyclerAdapter(ArrayList<MenuItem> menu){
         // initialize the adapter with its data set
-        m_MenuItemList = restaurant.getMenu(); // retrieve the menu from the restaurant
+        m_MenuItemList = menu;
         m_ViewHolderList = new ArrayList<>(); // keeps track of all of our view holders
     }
 
