@@ -32,6 +32,7 @@
         <activity android:name=".customer.customer_activity.RestaurantListActivity" />
         <activity android:name=".customer.AboutPageActivity" />
 
+
         <service
             android:name=".matching.MatchingService"
             android:enabled="true"

@@ -18,8 +18,11 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+
 import ca.mapd.capstone.smartmenu.R;
 import ca.mapd.capstone.smartmenu.customer.customer_activity.RestaurantListActivity;
+import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
 import ca.mapd.capstone.smartmenu.matching.MatchingService;
 
 public class MainActivity extends AuthAbstractActivity {
@@ -30,6 +33,8 @@ public class MainActivity extends AuthAbstractActivity {
     private MenuBroadcastReceiver menuBroadcastReceiver;
     TextView welcomeMessage;
     Button seeRestaurantListButton;
+    private ArrayList<String> m_RestaurantIds; /*this holds the list of Restaurant Ids which will be displayed*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +60,19 @@ public class MainActivity extends AuthAbstractActivity {
 
 
         menuBroadcastReceiver = new MenuBroadcastReceiver();
+
+        m_RestaurantIds = new ArrayList<>();
+
         seeRestaurantListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, RestaurantListActivity.class));
+                Intent intent = new Intent(MainActivity.this, RestaurantListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("RESTAURANT_ID_LIST", m_RestaurantIds);
+                startActivity(intent);
             }
         });
+
     }
 
     private void initBluetooth() {
@@ -120,6 +132,7 @@ public class MainActivity extends AuthAbstractActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("TEST", "MenuId discovered: " + intent.getStringExtra(KEY_MENU_ID));
+            m_RestaurantIds.add(intent.getStringExtra(KEY_MENU_ID));
         }
     }
 }
