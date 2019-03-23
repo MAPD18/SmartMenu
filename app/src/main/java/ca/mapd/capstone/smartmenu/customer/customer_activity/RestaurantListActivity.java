@@ -18,8 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 
 import ca.mapd.capstone.smartmenu.R;
@@ -74,16 +72,16 @@ public class RestaurantListActivity extends AppCompatActivity {
                 // when a restaurant has been added into the database
                 Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
                 String key = dataSnapshot.getKey();
-                if (restaurant != null) {
-                    if (m_BlutoothIDs.contains(key)){
-                        restaurant.isAvailable = true;
-                        m_RestaurantList.add(0, restaurant);
-                    } else {
-                        restaurant.isAvailable = false;
-                        m_RestaurantList.add(restaurant);
-                    }
-                    m_RestaurantKeyMap.put(key, m_RestaurantList.size() - 1);
+                assert restaurant != null;
+                restaurant.setId(key);
+                if (m_BlutoothIDs.contains(key)){
+                    restaurant.isAvailable = true;
+                    m_RestaurantList.add(0, restaurant);
+                } else {
+                    restaurant.isAvailable = false;
+                    m_RestaurantList.add(restaurant);
                 }
+                m_RestaurantKeyMap.put(key, m_RestaurantList.size() - 1);
                 m_Adapter.notifyDataSetChanged();
                 m_ProgressBar.setVisibility(View.GONE);
                 m_LinearLayout.setVisibility(View.VISIBLE);
@@ -125,7 +123,6 @@ public class RestaurantListActivity extends AppCompatActivity {
         //set adapter
         m_Adapter = new RestaurantRecyclerAdapter(m_RestaurantList);
         m_RecyclerView.setAdapter(m_Adapter);
-
 
 
     }

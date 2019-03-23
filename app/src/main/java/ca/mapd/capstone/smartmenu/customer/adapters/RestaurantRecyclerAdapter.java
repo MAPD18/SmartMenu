@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ca.mapd.capstone.smartmenu.R;
+import ca.mapd.capstone.smartmenu.customer.customer_activity.MenuListActivity;
 import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
 
 
@@ -44,6 +45,9 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
             // when a RestaurantHolder (e.g. a row or a cell in the RecyclerView) is clicked
             // view that Restaurant's detail through ViewRestaurantActivity
             Context context = itemView.getContext();
+            Intent intent = new Intent(itemView.getContext(), MenuListActivity.class);
+            intent.putExtra("RESTAURANT_ID", m_cRestaurant.m_key);
+            itemView.getContext().startActivity(intent);
 
         }
 
@@ -53,9 +57,9 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
             // :param Restaurant: a Restaurant which will be displayed on the RecyclerView
             m_cRestaurant = Restaurant;
             if (Restaurant.isAvailable)
-                m_cRestaurantCardView.setCardBackgroundColor(Color.parseColor("#26B4B0"));
+                m_cRestaurantCardView.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary));
             else
-                m_cRestaurantCardView.setCardBackgroundColor(Color.parseColor("#AEAEAE"));
+                m_cRestaurantCardView.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.colorGray));
             m_cRestaurantNameView.setText(Restaurant.m_Name);
             m_cRestaurantAddressView.setText(Restaurant.m_Address);
 

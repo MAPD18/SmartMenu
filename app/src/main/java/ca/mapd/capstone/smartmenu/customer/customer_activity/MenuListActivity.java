@@ -24,7 +24,7 @@ import ca.mapd.capstone.smartmenu.R;
 import ca.mapd.capstone.smartmenu.customer.adapters.MenuItemRecyclerAdapter;
 import ca.mapd.capstone.smartmenu.customer.models.MenuItem;
 
-public class ManuListActivity extends AppCompatActivity {
+public class MenuListActivity extends AppCompatActivity {
     private ArrayList<MenuItem> m_MenuList; /*this holds the list of Menus which will be displayed*/
     private HashMap<String, Integer> m_MenuKeyMap; //neat little hack to keep track of where our Menu resides in the Menulist
     private RecyclerView m_RecyclerView; // our RecyclerView instance
@@ -57,11 +57,11 @@ public class ManuListActivity extends AppCompatActivity {
         //get Restaurant ID from previous activity
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            m_RestaurantID = bundle.getString("RESTAURANT_ID");
+            m_RestaurantID = bundle.getString("RESTAURANT_ID", "");
         }
 
         //Firebase Menus
-        m_MenuRef = FirebaseDatabase.getInstance().getReference(MenuItem.MENU_KEY).child(m_RestaurantID);
+        m_MenuRef = FirebaseDatabase.getInstance().getReference("MENU").child(m_RestaurantID);
         m_MenuRefCEL = new ChildEventListener() {
             // listener populates the Menu list with data as it comes and goes
             @Override
