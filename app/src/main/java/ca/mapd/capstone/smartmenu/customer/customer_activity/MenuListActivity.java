@@ -21,67 +21,58 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import ca.mapd.capstone.smartmenu.R;
-import ca.mapd.capstone.smartmenu.customer.adapters.RestaurantRecyclerAdapter;
-import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
+import ca.mapd.capstone.smartmenu.customer.adapters.MenuItemRecyclerAdapter;
+import ca.mapd.capstone.smartmenu.customer.models.MenuItem;
 
-public class RestaurantListActivity extends AppCompatActivity {
-    private ArrayList<Restaurant> m_RestaurantList; /*this holds the list of Restaurants which will be displayed*/
-    private HashMap<String, Integer> m_RestaurantKeyMap; //neat little hack to keep track of where our restaurant resides in the restaurantlist
+public class MenuListActivity extends AppCompatActivity {
+    private ArrayList<MenuItem> m_MenuList; /*this holds the list of Menus which will be displayed*/
+    private HashMap<String, Integer> m_MenuKeyMap; //neat little hack to keep track of where our Menu resides in the Menulist
     private RecyclerView m_RecyclerView; // our RecyclerView instance
     private LinearLayoutManager m_LinearLayoutManager; //the LayoutManager used by the RecyclerView
-    private RestaurantRecyclerAdapter m_Adapter; // our custom RecyclerAdapter for Restaurant objects
-    private DatabaseReference m_RestaurantRef;
-    private ChildEventListener m_RestaurantRefCEL;
+    private MenuItemRecyclerAdapter m_Adapter; // our custom RecyclerAdapter for Menu objects
+    private DatabaseReference m_MenuRef;
+    private ChildEventListener m_MenuRefCEL;
     private LinearLayout m_LinearLayout;
     private ProgressBar m_ProgressBar;
-    private ArrayList<String> m_BlutoothIDs;
+    private String m_RestaurantID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setTitle("Choose which restaurant you'd like to order from");
-        setContentView(R.layout.activity_restaurant_list);
+        this.setTitle("Choose which Menu you'd like to order from");
+        setContentView(R.layout.activity_menu_list);
 
 
         //init vars
-        m_RecyclerView = (RecyclerView) findViewById(R.id.restaurantRecyclerView);
+        m_RecyclerView = (RecyclerView) findViewById(R.id.MenuRecyclerView);
         m_RecyclerView.setHasFixedSize(true);
         m_LinearLayoutManager = new LinearLayoutManager(this);
         m_RecyclerView.setLayoutManager(m_LinearLayoutManager);
-        m_RestaurantList = new ArrayList<>();
-        m_RestaurantKeyMap = new HashMap<>();
-        m_LinearLayout = (LinearLayout) findViewById(R.id.restaurantListLayout);
+        m_MenuList = new ArrayList<>();
+        m_MenuKeyMap = new HashMap<>();
+        m_LinearLayout = (LinearLayout) findViewById(R.id.MenuListLayout);
         m_ProgressBar = (ProgressBar) findViewById(R.id.loadingBar);
         m_ProgressBar.setIndeterminate(true);
 
-        //Get Restaurant IDs sent via Bluetooth from previous activity
+        //get Restaurant ID from previous activity
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            m_BlutoothIDs = bundle.getStringArrayList("RESTAURANT_ID_LIST");
-        }
-        if (m_BlutoothIDs == null) {
-            m_BlutoothIDs = new ArrayList<>();
+            m_RestaurantID = bundle.getString("RESTAURANT_ID", "");
         }
 
-        //Firebase restaurants
-        m_RestaurantRef = FirebaseDatabase.getInstance().getReference(Restaurant.RESTAURANT_KEY);
-        m_RestaurantRefCEL = new ChildEventListener() {
-            // listener populates the restaurant list with data as it comes and goes
+        //Firebase Menus
+        m_MenuRef = FirebaseDatabase.getInstance().getReference("MENU").child(m_RestaurantID);
+        m_MenuRefCEL = new ChildEventListener() {
+            // listener populates the Menu list with data as it comes and goes
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
-                // when a restaurant has been added into the database
-                Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
+                // when a menu has been added into the database
+                MenuItem menu = dataSnapshot.getValue(MenuItem.class);
                 String key = dataSnapshot.getKey();
-                assert restaurant != null;
-                restaurant.setId(key);
-                if (m_BlutoothIDs.contains(key)){
-                    restaurant.isAvailable = true;
-                    m_RestaurantList.add(0, restaurant);
-                } else {
-                    restaurant.isAvailable = false;
-                    m_RestaurantList.add(restaurant);
-                }
-                m_RestaurantKeyMap.put(key, m_RestaurantList.size() - 1);
+                
+                m_MenuList.add(menu);
+                m_MenuKeyMap.put(key, m_MenuList.size() - 1);
+
                 m_Adapter.notifyDataSetChanged();
                 m_ProgressBar.setVisibility(View.GONE);
                 m_LinearLayout.setVisibility(View.VISIBLE);
@@ -96,11 +87,11 @@ public class RestaurantListActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // when a restaurant has been removed from the database
-                Log.d("Restaurant", "Removed");
-                Integer index = m_RestaurantKeyMap.get(dataSnapshot.getKey());
-                m_RestaurantList.remove(index.intValue());
-                m_RestaurantKeyMap.remove(dataSnapshot.getKey());
+                // when a Menu has been removed from the database
+                Log.d("Menu", "Removed");
+                Integer index = m_MenuKeyMap.get(dataSnapshot.getKey());
+                m_MenuList.remove(index.intValue());
+                m_MenuKeyMap.remove(dataSnapshot.getKey());
                 m_Adapter.notifyDataSetChanged();
             }
 
@@ -112,7 +103,7 @@ public class RestaurantListActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // on connection failure
-                String toastStr = "Failed to load the list of restaurants";
+                String toastStr = "Failed to load the list of Menus";
                 Toast toast = Toast.makeText(getApplicationContext(), toastStr, Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -121,22 +112,23 @@ public class RestaurantListActivity extends AppCompatActivity {
 
 
         //set adapter
-        m_Adapter = new RestaurantRecyclerAdapter(m_RestaurantList);
+        m_Adapter = new MenuItemRecyclerAdapter(m_MenuList);
         m_RecyclerView.setAdapter(m_Adapter);
+
 
 
     }
 
     public void onResume(){
         //Firebase data restore
-        m_RestaurantRef.addChildEventListener(m_RestaurantRefCEL);
+        m_MenuRef.addChildEventListener(m_MenuRefCEL);
         super.onResume();
     }
 
     public void onPause(){
-        m_RestaurantRef.removeEventListener(m_RestaurantRefCEL);
-        m_RestaurantList.clear();
-        m_RestaurantKeyMap.clear();
+        m_MenuRef.removeEventListener(m_MenuRefCEL);
+        m_MenuList.clear();
+        m_MenuKeyMap.clear();
         super.onPause();
     }
 }

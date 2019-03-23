@@ -30,6 +30,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".customer.customer_activity.RestaurantListActivity" />
+        <activity android:name=".customer.customer_activity.MenuListActivity" />
+
         <activity android:name=".customer.AboutPageActivity" />
 
 

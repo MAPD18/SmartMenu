@@ -8,6 +8,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class MenuItem implements Parcelable{
+    public static final String MENU_KEY = "MENU";
     public String m_Name;
     public String m_Description;
     public int m_Price;

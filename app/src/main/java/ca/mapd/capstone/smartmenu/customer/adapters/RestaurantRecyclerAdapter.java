@@ -2,6 +2,9 @@ package ca.mapd.capstone.smartmenu.customer.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ca.mapd.capstone.smartmenu.R;
+import ca.mapd.capstone.smartmenu.customer.customer_activity.MenuListActivity;
 import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
 
 
@@ -23,12 +27,14 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
     // recycler adapter for restaurants
 
     public static class RestaurantHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private CardView m_cRestaurantCardView;
         private TextView m_cRestaurantNameView;
         private TextView m_cRestaurantAddressView;
         private Restaurant m_cRestaurant;
 
         public RestaurantHolder(View v){
             super(v);
+            m_cRestaurantCardView = (CardView) v.findViewById(R.id.cardview);
             m_cRestaurantNameView = (TextView) v.findViewById(R.id.recyclerRestaurantShortTextView);
             m_cRestaurantAddressView = (TextView) v.findViewById(R.id.recyclerAddressShortTextView);
             v.setOnClickListener(this);
@@ -39,6 +45,9 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
             // when a RestaurantHolder (e.g. a row or a cell in the RecyclerView) is clicked
             // view that Restaurant's detail through ViewRestaurantActivity
             Context context = itemView.getContext();
+            Intent intent = new Intent(itemView.getContext(), MenuListActivity.class);
+            intent.putExtra("RESTAURANT_ID", m_cRestaurant.m_key);
+            itemView.getContext().startActivity(intent);
 
         }
 
@@ -47,6 +56,10 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
             // the binded Restaurant's detail will be displayed in the cell/row of the RecyclerView
             // :param Restaurant: a Restaurant which will be displayed on the RecyclerView
             m_cRestaurant = Restaurant;
+            if (Restaurant.isAvailable)
+                m_cRestaurantCardView.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary));
+            else
+                m_cRestaurantCardView.setCardBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.colorGray));
             m_cRestaurantNameView.setText(Restaurant.m_Name);
             m_cRestaurantAddressView.setText(Restaurant.m_Address);
 
@@ -74,9 +87,9 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
                     results.values = m_RestaurantList;
                     results.count = m_RestaurantList.size();
                 }
-                else{
+                else {
                     ArrayList<Restaurant> filterResultsData = new ArrayList<Restaurant>();
-                    for(int i = 0; i < m_RestaurantList.size(); i++){
+                    for(int i = 0; i < m_RestaurantList.size(); i++) {
                         //this is where we filter stuffs
                         if (m_RestaurantList.get(i).toString().toLowerCase()
                                 .contains(constraint.toString().toLowerCase())){
