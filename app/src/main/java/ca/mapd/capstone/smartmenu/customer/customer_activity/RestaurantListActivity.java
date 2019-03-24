@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class RestaurantListActivity extends AppCompatActivity {
     private LinearLayoutManager m_LinearLayoutManager; //the LayoutManager used by the RecyclerView
     private RestaurantRecyclerAdapter m_Adapter; // our custom RecyclerAdapter for Restaurant objects
     private DatabaseReference m_RestaurantRef;
-    private ChildEventListener m_RestaurantRefCEL;
+    private DatabaseReference m_RestaurantRef2;
     private LinearLayout m_LinearLayout;
     private ProgressBar m_ProgressBar;
     private ArrayList<String> m_BlutoothIDs;
@@ -64,77 +65,58 @@ public class RestaurantListActivity extends AppCompatActivity {
         }
 
         //Firebase restaurants
-        m_RestaurantRef = FirebaseDatabase.getInstance().getReference(Restaurant.RESTAURANT_KEY);
-        m_RestaurantRefCEL = new ChildEventListener() {
-            // listener populates the restaurant list with data as it comes and goes
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
-                // when a restaurant has been added into the database
-                Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
-                String key = dataSnapshot.getKey();
-                assert restaurant != null;
-                restaurant.setId(key);
-                if (m_BlutoothIDs.contains(key)){
-                    restaurant.isAvailable = true;
-                    m_RestaurantList.add(0, restaurant);
-                } else {
-                    restaurant.isAvailable = false;
-                    m_RestaurantList.add(restaurant);
-                }
-                m_RestaurantKeyMap.put(key, m_RestaurantList.size() - 1);
-                m_Adapter.notifyDataSetChanged();
-                m_ProgressBar.setVisibility(View.GONE);
-                m_LinearLayout.setVisibility(View.VISIBLE);
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //shouldn't be fired because Order's cannot change once it has been lodged
-                // it can be removed though
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // when a restaurant has been removed from the database
-                Log.d("Restaurant", "Removed");
-                Integer index = m_RestaurantKeyMap.get(dataSnapshot.getKey());
-                m_RestaurantList.remove(index.intValue());
-                m_RestaurantKeyMap.remove(dataSnapshot.getKey());
-                m_Adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // on connection failure
-                String toastStr = "Failed to load the list of restaurants";
-                Toast toast = Toast.makeText(getApplicationContext(), toastStr, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        };
-
-
+        m_RestaurantRef = FirebaseDatabase.getInstance().getReference(Restaurant.RESTAURANT_KEY).child("ajdsb328udbaisd97udb192uwdb");
+        m_RestaurantRef2 = FirebaseDatabase.getInstance().getReference(Restaurant.RESTAURANT_KEY).child("item1");
 
         //set adapter
         m_Adapter = new RestaurantRecyclerAdapter(m_RestaurantList);
         m_RecyclerView.setAdapter(m_Adapter);
 
-
     }
+
+    private ValueEventListener myListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
+            String key = dataSnapshot.getKey();
+            if (key != null && restaurant == null) { // Restaurant removed
+                Integer position = m_RestaurantKeyMap.get(key);
+                if (position != null) {
+                    m_RestaurantList.remove((int) position);
+                    m_RestaurantKeyMap.remove(key);
+                }
+            } else if (restaurant != null) {
+                restaurant.setId(key);
+                Integer position = m_RestaurantKeyMap.get(key);
+                if (position == null) {
+                    m_RestaurantList.add(restaurant);
+                    position = m_RestaurantList.size() - 1;
+                    m_RestaurantKeyMap.put(key, position);
+                }
+
+                m_ProgressBar.setVisibility(View.GONE);
+                m_LinearLayout.setVisibility(View.VISIBLE);
+            }
+            m_Adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
 
     public void onResume(){
         //Firebase data restore
-        m_RestaurantRef.addChildEventListener(m_RestaurantRefCEL);
+        //m_RestaurantRef.addChildEventListener(m_RestaurantRefCEL);
+        m_RestaurantRef.addValueEventListener(myListener);
+        m_RestaurantRef2.addValueEventListener(myListener);
         super.onResume();
     }
 
     public void onPause(){
-        m_RestaurantRef.removeEventListener(m_RestaurantRefCEL);
+        m_RestaurantRef.removeEventListener(myListener);
+        m_RestaurantRef2.removeEventListener(myListener);
         m_RestaurantList.clear();
         m_RestaurantKeyMap.clear();
         super.onPause();

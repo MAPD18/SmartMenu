@@ -25,6 +25,10 @@ import ca.mapd.capstone.smartmenu.customer.adapters.MenuItemRecyclerAdapter;
 import ca.mapd.capstone.smartmenu.customer.models.MenuItem;
 
 public class MenuListActivity extends AppCompatActivity {
+
+    public static final String KEY_RESTAURANT_ID = "restaurant_id";
+    public static final String KEY_RESTAURANT_NAME = "restaurant_name";
+
     private ArrayList<MenuItem> m_MenuList; /*this holds the list of Menus which will be displayed*/
     private HashMap<String, Integer> m_MenuKeyMap; //neat little hack to keep track of where our Menu resides in the Menulist
     private RecyclerView m_RecyclerView; // our RecyclerView instance
@@ -35,11 +39,11 @@ public class MenuListActivity extends AppCompatActivity {
     private LinearLayout m_LinearLayout;
     private ProgressBar m_ProgressBar;
     private String m_RestaurantID;
+    private String m_RestaurantName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setTitle("Choose which Menu you'd like to order from");
         setContentView(R.layout.activity_menu_list);
 
 
@@ -57,7 +61,9 @@ public class MenuListActivity extends AppCompatActivity {
         //get Restaurant ID from previous activity
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            m_RestaurantID = bundle.getString("RESTAURANT_ID", "");
+            m_RestaurantID = bundle.getString(KEY_RESTAURANT_ID, "");
+            m_RestaurantName = bundle.getString(KEY_RESTAURANT_NAME, "");
+            this.setTitle(m_RestaurantName);
         }
 
         //Firebase Menus
@@ -71,18 +77,26 @@ public class MenuListActivity extends AppCompatActivity {
                 String key = dataSnapshot.getKey();
                 
                 m_MenuList.add(menu);
-                m_MenuKeyMap.put(key, m_MenuList.size() - 1);
-
-                m_Adapter.notifyDataSetChanged();
+                int position = m_MenuList.size() - 1;
+                m_MenuKeyMap.put(key, position);
+                m_Adapter.updateMenuItem(menu, position);
                 m_ProgressBar.setVisibility(View.GONE);
                 m_LinearLayout.setVisibility(View.VISIBLE);
 
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
                 //shouldn't be fired because Order's cannot change once it has been lodged
                 // it can be removed though
+                MenuItem menu = dataSnapshot.getValue(MenuItem.class);
+                String key = dataSnapshot.getKey();
+
+                Integer position = m_MenuKeyMap.get(key);
+                if (position != null) {
+                    m_Adapter.updateMenuItem(menu, position);
+                }
+
             }
 
             @Override
