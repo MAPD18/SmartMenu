@@ -1,10 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="ca.mapd.capstone.smartmenu.customer.RestaurantProfileActivity">
+        tools:context="ca.mapd.capstone.smartmenu.restaurant.activities.RestaurantProfileActivity"
+        android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+
+    <TextView
+            android:text="Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lblName"
+            android:layout_weight="1"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="10"
+            android:id="@+id/txtName"
+            android:layout_weight="1"/>
+
+    <TextView
+            android:text="Address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lblAdress"
+            android:layout_weight="1"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:text=""
+            android:ems="10"
+            android:id="@+id/txtAddress"
+            android:layout_weight="1"/>
+
+    <TextView
+            android:text="Phone number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lblPhoneNumber"
+            android:layout_weight="1"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:text=""
+            android:ems="10"
+            android:id="@+id/txtPhoneNumber"
+            android:layout_weight="1"/>
+</TableLayout>
