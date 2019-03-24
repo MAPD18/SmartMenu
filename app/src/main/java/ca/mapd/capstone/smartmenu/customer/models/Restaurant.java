@@ -9,36 +9,47 @@ import java.util.ArrayList;
 
 
 @IgnoreExtraProperties
-public class Restaurant implements Parcelable{
+public class Restaurant implements Parcelable {
     public static final String RESTAURANT_KEY = "RESTAURANT";
     public String m_Name;
     public String m_Address;
+    public Double m_latitude;
+    public Double m_longitude;
     public ArrayList<MenuItem> m_Menu;
     public boolean isAvailable;
 
-    public Restaurant(){
+    public Restaurant() {
 
     }
-    public Restaurant(String name, String address){
+
+    public Restaurant(String name, String address) {
         m_Name = name;
         m_Address = address;
         m_Menu = new ArrayList<MenuItem>();
     }
 
-    public String getName(){
+    public String getName() {
         return m_Name;
     }
 
-    public String getAddress(){
+    public String getAddress() {
         return m_Address;
     }
 
-    public ArrayList<MenuItem> getMenu(){
+    public ArrayList<MenuItem> getMenu() {
         return m_Menu;
     }
 
-    public void addItem(MenuItem menuItem){
+    public void addItem(MenuItem menuItem) {
         this.m_Menu.add(menuItem);
+    }
+
+    public Double getM_latitude() {
+        return m_latitude;
+    }
+
+    public Double getM_longitude() {
+        return m_longitude;
     }
 
     @Override
@@ -46,7 +57,7 @@ public class Restaurant implements Parcelable{
         return 0;
     }
 
-    protected Restaurant(Parcel in){
+    protected Restaurant(Parcel in) {
         m_Name = in.readString();
         m_Address = in.readString();
         m_Menu = new ArrayList<>();
@@ -60,7 +71,7 @@ public class Restaurant implements Parcelable{
         dest.writeTypedList(m_Menu);
     }
 
-    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>(){
+    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
 
         @Override
         public Restaurant createFromParcel(Parcel source) {
@@ -73,7 +84,7 @@ public class Restaurant implements Parcelable{
         }
     };
 
-    public String toString(){
+    public String toString() {
         return getName();
     }
 }

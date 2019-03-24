@@ -5,55 +5,96 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="ca.mapd.capstone.smartmenu.restaurant.activities.RestaurantProfileActivity"
-        android:orientation="vertical">
-
+        tools:context="ca.mapd.capstone.smartmenu.restaurant.activities.RestaurantProfileActivity">
 
     <TextView
-            android:text="Name"
+            android:id="@+id/welcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/lblName"
-            android:layout_weight="1"/>
+            android:textAlignment="center"
+            android:text="@string/restaurant_profile"
+            android:textSize="20sp"/>
 
-    <EditText
+    <TableRow
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:text="@string/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lblName"
+                android:layout_weight="1"/>
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text=""
+                android:ems="10"
+                android:id="@+id/txtName"
+                android:layout_weight="1"/>
+    </TableRow>
+
+    <TableRow
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:text="@string/address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lblAdress"
+                android:layout_weight="1"/>
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:text=""
+                android:ems="10"
+                android:id="@+id/txtAddress"
+                android:layout_weight="1"/>
+    </TableRow>
+
+    <TableRow
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:text="@string/phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lblPhoneNumber"
+                android:layout_weight="1"/>
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:text=""
+                android:ems="10"
+                android:id="@+id/txtPhoneNumber"
+                android:layout_weight="1"/>
+
+    </TableRow>
+
+    <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text=""
-            android:ems="10"
-            android:id="@+id/txtName"
-            android:layout_weight="1"/>
+            android:gravity="center_horizontal">
 
-    <TextView
-            android:text="Address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/lblAdress"
-            android:layout_weight="1"/>
-
-    <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
-            android:text=""
-            android:ems="10"
-            android:id="@+id/txtAddress"
-            android:layout_weight="1"/>
-
-    <TextView
-            android:text="Phone number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/lblPhoneNumber"
-            android:layout_weight="1"/>
-
-    <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:text=""
-            android:ems="10"
-            android:id="@+id/txtPhoneNumber"
-            android:layout_weight="1"/>
+        <Button
+                android:text="@string/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSaveRestaurantProfile"
+                android:onClick="onClickSave"/>
+    </TableRow>
 </TableLayout>

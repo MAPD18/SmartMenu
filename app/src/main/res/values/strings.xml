@@ -54,4 +54,9 @@
 
     <string name="login_or_password_invalid_message">Login or Password Invalid</string>
     <string name="restaurant_list_button_text">See Restaurants</string>
+    <string name="restaurant_profile">Restaurant Profile</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="phone_number">Phone number</string>
+    <string name="save">Save</string>
 </resources>
