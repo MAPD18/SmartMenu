@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.mapd.capstone.smartmenu.customer.customer_activity.RestaurantListActivity">
+    tools:context="ca.mapd.capstone.smartmenu.customer.customer_activity.CustomerMainActivity">
 
     <ProgressBar
         android:id="@+id/loadingBar"
-        style="@android:style/Widget.Material.Light.ProgressBar"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

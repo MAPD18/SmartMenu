@@ -16,8 +16,7 @@ import android.util.SparseBooleanArray;
 
 import java.util.List;
 
-import ca.mapd.capstone.smartmenu.activities.LoginActivity;
-import ca.mapd.capstone.smartmenu.activities.MainActivity;
+import ca.mapd.capstone.smartmenu.customer.customer_activity.CustomerMainActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -162,8 +161,8 @@ public class MyBluetoothGattCallback extends BluetoothGattCallback {
         if (data != null && data.length > 0) {
             String menuId = new String(data);
             Log.d(Constants.TAG, "Characteristics: " + menuId);
-            Intent intent = new Intent(MainActivity.MenuBroadcastReceiver.MENU_INTENT_FILTER);
-            intent.putExtra(MainActivity.MenuBroadcastReceiver.KEY_MENU_ID, menuId);
+            Intent intent = new Intent(CustomerMainActivity.MenuBroadcastReceiver.MENU_INTENT_FILTER);
+            intent.putExtra(CustomerMainActivity.MenuBroadcastReceiver.KEY_MENU_ID, menuId);
             mContext.sendBroadcast(intent);
             deviceProcessCompleted.append(bluetoothGatt.getDevice().getAddress().hashCode(), true);
             notificationDecorator.displaySimpleNotification("New Menu Discovered nearby!", menuId);
