@@ -12,9 +12,9 @@ import android.util.Log;
 
 import ca.mapd.capstone.smartmenu.activities.LoginActivity;
 
-import static ca.mapd.capstone.smartmenu.matching.Constants.CHANNEL_DESCRIPTION;
-import static ca.mapd.capstone.smartmenu.matching.Constants.CHANNEL_ID;
-import static ca.mapd.capstone.smartmenu.matching.Constants.CHANNEL_NAME;
+import static ca.mapd.capstone.smartmenu.util.Constants.CHANNEL_DESCRIPTION;
+import static ca.mapd.capstone.smartmenu.util.Constants.CHANNEL_ID;
+import static ca.mapd.capstone.smartmenu.util.Constants.CHANNEL_NAME;
 
 class NotificationDecorator {
 

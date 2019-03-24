@@ -20,9 +20,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="visible"/>
 
-
     <LinearLayout
-        android:id="@+id/restaurantListLayout"
+        android:id="@+id/MenuListLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -39,26 +38,11 @@
         android:visibility="gone">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/restaurantRecyclerView"
+            android:id="@+id/MenuRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/statusMessageView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="Scanning Bluetooth..."
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Scanning Bluetooth..." />
 
 </android.support.constraint.ConstraintLayout>

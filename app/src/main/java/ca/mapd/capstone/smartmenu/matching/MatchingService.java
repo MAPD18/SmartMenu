@@ -3,12 +3,14 @@ package ca.mapd.capstone.smartmenu.matching;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
 import java.nio.charset.Charset;
 
 import ca.mapd.capstone.smartmenu.R;
+import ca.mapd.capstone.smartmenu.util.Constants;
 
 public class MatchingService extends Service {
     private BluetoothManager mBluetoothManager;
@@ -17,6 +19,7 @@ public class MatchingService extends Service {
     public static final String START_BLUETOOTH_FORCE = "start_bluetooth_force";
     public static final String STOP_SERVICE = "stop_service";
     public static boolean isRestaurantApp = false;
+    public static String restaurantId = "";
 
     public static void startMatchingWithBluetooth(Context context, boolean startBluetoothForce) {
         isRestaurantApp = context.getResources().getBoolean(R.bool.is_restaurant_app);
@@ -38,6 +41,7 @@ public class MatchingService extends Service {
     public void onCreate() {
         Log.d(Constants.TAG, "MatchingService: onCreate");
         isRestaurantApp = getApplicationContext().getResources().getBoolean(R.bool.is_restaurant_app);
+        restaurantId = getApplicationContext().getSharedPreferences(Constants.MY_PREFS, Context.MODE_PRIVATE).getString(Constants.MY_PREFS_RESTAURANT_ID, "");
     }
 
     @Override
@@ -49,9 +53,8 @@ public class MatchingService extends Service {
             boolean startBluetoothForce = intent.getBooleanExtra(START_BLUETOOTH_FORCE, false);
 
             if (useBluetooth && mBluetoothManager == null) {
-                String menuId = "Menu Id: 174691283";
                 // On Android, the default charset is UTF-8.
-                byte[] menuIdBytes = menuId.getBytes();
+                byte[] menuIdBytes = restaurantId.getBytes();
 
                 mBluetoothManager = new BluetoothManager(this);
                 boolean result = mBluetoothManager.start(menuIdBytes, startBluetoothForce, isRestaurantApp);
