@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import ca.mapd.capstone.smartmenu.R;
 import ca.mapd.capstone.smartmenu.customer.customer_activity.CustomerMainActivity;
+import ca.mapd.capstone.smartmenu.restaurant.RestaurantMainActivity;
 
 public class MainActivity extends AuthAbstractActivity {
 
@@ -16,7 +17,7 @@ public class MainActivity extends AuthAbstractActivity {
         if (m_Auth.getCurrentUser() != null) {
             boolean isRestaurantApp = getResources().getBoolean(R.bool.is_restaurant_app);
             if (isRestaurantApp)
-                startActivity(new Intent(this, CustomerMainActivity.class));
+                startActivity(new Intent(this, RestaurantMainActivity.class));
             else
                 startActivity(new Intent(this, CustomerMainActivity.class));
         } else {

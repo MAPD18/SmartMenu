@@ -17,6 +17,7 @@ import android.util.SparseBooleanArray;
 import java.util.List;
 
 import ca.mapd.capstone.smartmenu.customer.customer_activity.CustomerMainActivity;
+import ca.mapd.capstone.smartmenu.util.Constants;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
