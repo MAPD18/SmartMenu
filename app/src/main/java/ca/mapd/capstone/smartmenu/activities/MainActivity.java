@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import ca.mapd.capstone.smartmenu.restaurant.activities.RestaurantProfileActivity;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class MainActivity extends AuthAbstractActivity {
     private MenuBroadcastReceiver menuBroadcastReceiver;
     TextView welcomeMessage;
     Button seeRestaurantListButton;
+    Button myProfileButton;
     private ArrayList<String> m_RestaurantIds; /*this holds the list of Restaurant Ids which will be displayed*/
 
 
@@ -42,11 +44,13 @@ public class MainActivity extends AuthAbstractActivity {
         setContentView(R.layout.activity_main);
 
         welcomeMessage = findViewById(R.id.welcomeMessage);
+        myProfileButton = findViewById(R.id.myProfileButton);
         seeRestaurantListButton = findViewById(R.id.seeRestaurantListButton);
         boolean isRestaurantApp = getResources().getBoolean(R.bool.is_restaurant_app);
+        myProfileButton.setVisibility(isRestaurantApp ? View.VISIBLE : View.GONE);
         seeRestaurantListButton.setVisibility(isRestaurantApp ? View.GONE : View.VISIBLE);
 
-        FirebaseUser user = m_Auth.getCurrentUser();
+        final FirebaseUser user = m_Auth.getCurrentUser();
         if (user != null)
             welcomeMessage.setText(getString(R.string.welcome_text_on_login, user.getDisplayName()));
 
@@ -62,6 +66,15 @@ public class MainActivity extends AuthAbstractActivity {
         menuBroadcastReceiver = new MenuBroadcastReceiver();
 
         m_RestaurantIds = new ArrayList<>();
+
+        myProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RestaurantProfileActivity.class);
+                intent.putExtra("userEmail", user.getEmail());
+                startActivity(intent);
+            }
+        });
 
         seeRestaurantListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +116,6 @@ public class MainActivity extends AuthAbstractActivity {
         super.onPause();
         unregisterReceiver(menuBroadcastReceiver);
     }
-
 
 
     @Override

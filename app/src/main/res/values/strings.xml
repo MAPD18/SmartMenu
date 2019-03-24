@@ -59,4 +59,6 @@
     <string name="address">Address</string>
     <string name="phone_number">Phone number</string>
     <string name="save">Save</string>
+    <string name="my_profile">My Profile</string>
+    <string name="e_mail">E-mail</string>
 </resources>
