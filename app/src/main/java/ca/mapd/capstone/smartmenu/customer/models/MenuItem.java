@@ -8,9 +8,10 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class MenuItem implements Parcelable{
+    public static final String MENU_KEY = "MENU";
     public String m_Name;
     public String m_Description;
-    public int m_Price;
+    public double m_Price;
 
     public MenuItem(){
 
@@ -59,10 +60,14 @@ public class MenuItem implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(m_Name);
         dest.writeString(m_Description);
-        dest.writeInt(m_Price);
+        dest.writeDouble(m_Price);
     }
 
-    public int getPrice() {
-        return m_Price;
+    public String getPriceAsString() {
+        return "$" + m_Price;
+    }
+
+    public String getName() {
+        return m_Name;
     }
 }

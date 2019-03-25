@@ -20,6 +20,7 @@ public class Restaurant implements Parcelable {
     public String m_Email;
     public ArrayList<MenuItem> m_Menu;
     public boolean isAvailable;
+    public String m_key;
 
     public Restaurant() {
 
@@ -95,6 +96,10 @@ public class Restaurant implements Parcelable {
 
     public void setM_Email(String m_Email) {
         this.m_Email = m_Email;
+    }
+
+    public void setId(String m_key) {
+        this.m_key = m_key;
     }
 
     @Override

@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.google.android.gms.common.SignInButton;
 
 import ca.mapd.capstone.smartmenu.R;
-import ca.mapd.capstone.smartmenu.customer.AboutPageActivity;
-import ca.mapd.capstone.smartmenu.customer.customer_activity.RestaurantListActivity;
 
 public class LoginActivity extends AuthAbstractActivity implements View.OnClickListener {
     /*
