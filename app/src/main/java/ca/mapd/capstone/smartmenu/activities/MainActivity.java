@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ca.mapd.capstone.smartmenu.R;
 import ca.mapd.capstone.smartmenu.customer.customer_activity.RestaurantListActivity;
+import ca.mapd.capstone.smartmenu.customer.customer_activity.CustomerProfileActivity;
 import ca.mapd.capstone.smartmenu.matching.MatchingService;
 
 public class MainActivity extends AuthAbstractActivity {
@@ -30,6 +31,7 @@ public class MainActivity extends AuthAbstractActivity {
     private MenuBroadcastReceiver menuBroadcastReceiver;
     TextView welcomeMessage;
     Button seeRestaurantListButton;
+    Button customerProfileButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +39,13 @@ public class MainActivity extends AuthAbstractActivity {
         setContentView(R.layout.activity_main);
 
         welcomeMessage = findViewById(R.id.welcomeMessage);
+        customerProfileButton = findViewById(R.id.customerProfileButton);
         seeRestaurantListButton = findViewById(R.id.seeRestaurantListButton);
         boolean isRestaurantApp = getResources().getBoolean(R.bool.is_restaurant_app);
+        customerProfileButton.setVisibility(isRestaurantApp ? View.GONE : View.VISIBLE);
         seeRestaurantListButton.setVisibility(isRestaurantApp ? View.GONE : View.VISIBLE);
 
-        FirebaseUser user = m_Auth.getCurrentUser();
+        final FirebaseUser user = m_Auth.getCurrentUser();
         if (user != null)
             welcomeMessage.setText(getString(R.string.welcome_text_on_login, user.getDisplayName()));
 
@@ -53,6 +57,14 @@ public class MainActivity extends AuthAbstractActivity {
         } else
             initBluetooth();
 
+        customerProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CustomerProfileActivity.class);
+                intent.putExtra("userEmail", user.getEmail());
+                startActivity(intent);
+            }
+        });
 
         menuBroadcastReceiver = new MenuBroadcastReceiver();
         seeRestaurantListButton.setOnClickListener(new View.OnClickListener() {
