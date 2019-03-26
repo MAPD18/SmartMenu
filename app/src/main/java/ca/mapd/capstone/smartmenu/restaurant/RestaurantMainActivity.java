@@ -11,18 +11,27 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import ca.mapd.capstone.smartmenu.R;
+import ca.mapd.capstone.smartmenu.activities.AuthAbstractActivity;
+import ca.mapd.capstone.smartmenu.activities.LoginActivity;
+import ca.mapd.capstone.smartmenu.customer.AboutPageActivity;
 import ca.mapd.capstone.smartmenu.matching.MatchingService;
+import ca.mapd.capstone.smartmenu.restaurant.model.CachedRestaurantRepository;
 
 import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS;
+import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_CUSTOMER_SCAN_ON;
+import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_RESTAURANT_BROADCAST_ON;
 import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_RESTAURANT_ID;
 
-public class RestaurantMainActivity extends AppCompatActivity {
+public class RestaurantMainActivity extends AuthAbstractActivity {
 
     private static final int REQUEST_ENABLE_BT = 3456;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 46193;
@@ -45,8 +54,11 @@ public class RestaurantMainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 toggleBroadcast(isChecked);
+                sharedPref.edit().putBoolean(MY_PREFS_RESTAURANT_BROADCAST_ON, isChecked).apply();
             }
         });
+
+        broadcastToggle.setChecked(sharedPref.getBoolean(MY_PREFS_RESTAURANT_BROADCAST_ON, false));
     }
 
     private void toggleBroadcast(boolean isChecked) {
@@ -95,6 +107,31 @@ public class RestaurantMainActivity extends AppCompatActivity {
                             MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
                 }
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.app_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.about_page:
+                startActivity(new Intent(this, AboutPageActivity.class));
+                return true;
+            case R.id.log_out:
+                m_Auth.signOut();
+                super.googleSignOut();
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -23,7 +23,7 @@ public class MainActivity extends AuthAbstractActivity {
         } else {
             startActivity(new Intent(this, LoginActivity.class));
         }
-
+        finish();
     }
 
 }

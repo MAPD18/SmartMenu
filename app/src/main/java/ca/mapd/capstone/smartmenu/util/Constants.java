@@ -14,6 +14,8 @@ public abstract class Constants {
 
     public static final String MY_PREFS = "myApp.prefs";
     public static final String MY_PREFS_RESTAURANT_ID = "myApp.prefs.restaurantId";
+    public static final String MY_PREFS_RESTAURANT_BROADCAST_ON = "myApp.prefs.restaurant.broadcast.on";
+    public static final String MY_PREFS_CUSTOMER_SCAN_ON = "myApp.prefs.customer.scan.on";
 
 
 }

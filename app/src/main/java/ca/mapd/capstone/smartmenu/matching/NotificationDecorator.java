@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import ca.mapd.capstone.smartmenu.activities.LoginActivity;
+import ca.mapd.capstone.smartmenu.customer.customer_activity.CustomerMainActivity;
 
 import static ca.mapd.capstone.smartmenu.util.Constants.CHANNEL_DESCRIPTION;
 import static ca.mapd.capstone.smartmenu.util.Constants.CHANNEL_ID;
@@ -36,7 +37,7 @@ class NotificationDecorator {
     }
 
     void displaySimpleNotification(String title, String contentText) {
-        Intent intent = new Intent(context, LoginActivity.class);
+        Intent intent = new Intent(context, CustomerMainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0,

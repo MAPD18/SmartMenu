@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -34,10 +38,17 @@ import java.util.HashMap;
 
 import ca.mapd.capstone.smartmenu.R;
 import ca.mapd.capstone.smartmenu.activities.AuthAbstractActivity;
+import ca.mapd.capstone.smartmenu.activities.LoginActivity;
+import ca.mapd.capstone.smartmenu.customer.AboutPageActivity;
 import ca.mapd.capstone.smartmenu.customer.adapters.RestaurantRecyclerAdapter;
 import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
 import ca.mapd.capstone.smartmenu.matching.MatchingService;
+import ca.mapd.capstone.smartmenu.restaurant.model.CachedRestaurantRepository;
 import ca.mapd.capstone.smartmenu.util.Constants;
+
+import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS;
+import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_CUSTOMER_SCAN_ON;
+import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_RESTAURANT_BROADCAST_ON;
 
 public class CustomerMainActivity extends AuthAbstractActivity {
     private ArrayList<Restaurant> m_RestaurantList; /*this holds the list of Restaurants which will be displayed*/
@@ -57,6 +68,7 @@ public class CustomerMainActivity extends AuthAbstractActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 46193;
     private BluetoothAdapter bluetoothAdapter;
     private MenuBroadcastReceiver menuBroadcastReceiver;
+    private CachedRestaurantRepository cachedRestaurantRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +76,7 @@ public class CustomerMainActivity extends AuthAbstractActivity {
         this.setTitle("Choose which restaurant you'd like to order from");
         setContentView(R.layout.activity_restaurant_list);
 
+        cachedRestaurantRepository = new CachedRestaurantRepository(getApplication());
 
         //init vars
         m_RecyclerView = findViewById(R.id.restaurantRecyclerView);
@@ -89,12 +102,17 @@ public class CustomerMainActivity extends AuthAbstractActivity {
         if (user != null)
             this.setTitle(user.getDisplayName());
 
+        final SharedPreferences sharedPref = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
+
         m_ScanningToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 toggleScanning(isChecked);
+                sharedPref.edit().putBoolean(MY_PREFS_CUSTOMER_SCAN_ON, isChecked).apply();
             }
         });
+
+        m_ScanningToggle.setChecked(sharedPref.getBoolean(MY_PREFS_CUSTOMER_SCAN_ON, false));
 
         menuBroadcastReceiver = new MenuBroadcastReceiver();
     }
@@ -151,16 +169,16 @@ public class CustomerMainActivity extends AuthAbstractActivity {
         super.onResume();
     }
 
-    public void onPause(){
+    @Override
+    protected void onDestroy() {
         for (DatabaseReference ref : m_RefList) {
             ref.removeEventListener(myListener);
         }
         m_RestaurantList.clear();
         m_RestaurantKeyMap.clear();
         unregisterReceiver(menuBroadcastReceiver);
-        super.onPause();
+        super.onDestroy();
     }
-
 
     private void toggleScanning(boolean isChecked) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -223,6 +241,31 @@ public class CustomerMainActivity extends AuthAbstractActivity {
                 position = m_RefList.size() - 1;
                 m_RefListMap.put(restaurantId, position);
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.app_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.about_page:
+                startActivity(new Intent(this, AboutPageActivity.class));
+                return true;
+            case R.id.log_out:
+                m_Auth.signOut();
+                super.googleSignOut();
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
