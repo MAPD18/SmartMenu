@@ -3,6 +3,9 @@
     <color name="colorPrimary">#26B4B0</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorAccentDark">#720C31</color>
     <color name="google_blue">#4285f4</color>
     <color name="colorGray">#AEAEAE</color>
+    <color name="colorWhite">#FFFFFF</color>
+
 </resources>
