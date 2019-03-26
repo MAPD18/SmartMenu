@@ -31,7 +31,6 @@ public class MatchingService extends Service {
     }
 
     public static void stopMatchingWithBluetooth(Context context) {
-        isRestaurantApp = context.getResources().getBoolean(R.bool.is_restaurant_app);
         Log.d(Constants.TAG, "stopMatchingWithBluetooth: " +isRestaurantApp);
         Intent intent = new Intent(context, MatchingService.class);
         context.stopService(intent);
