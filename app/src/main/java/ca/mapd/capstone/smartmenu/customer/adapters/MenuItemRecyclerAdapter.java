@@ -22,69 +22,39 @@ public class MenuItemRecyclerAdapter
     private ArrayList<MenuItem> m_MenuItemList; // the complete data set of MenuItems
     private ArrayList<MenuItemHolder> m_ViewHolderList;
 
-    public static class MenuItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class MenuItemHolder extends RecyclerView.ViewHolder {
         private TextView m_cMenuItemNameView;
-        private TextView m_CountItemView;
+        private TextView m_cMenuItemDescriptionView;
+        private TextView m_cMenuItemPriceView;
         private MenuItem m_cMenuItem;
-        private Button m_AddButton;
-        private Button m_SubButton;
-        private int m_ItemCount;
 
         private MenuItemHolder(View v){
             super(v);
-            m_ItemCount = 0;
-            m_cMenuItemNameView = (TextView) v.findViewById(R.id.recyclerMenuItemShortTextView);
-            m_CountItemView = (TextView) v.findViewById(R.id.recyclerMenuItemCountTextView);
-            m_CountItemView.setText(this.countToString());
-            m_AddButton = (Button) v.findViewById(R.id.addMenuItemButton);
-            m_SubButton = (Button) v.findViewById(R.id.subMenuItemButton);
-            m_AddButton.setOnClickListener(this);
-            m_SubButton.setOnClickListener(this);
+            m_cMenuItemNameView = (TextView) v.findViewById(R.id.menuItemName);
+            m_cMenuItemDescriptionView = (TextView) v.findViewById(R.id.menuItemDescription);
+            m_cMenuItemPriceView = (TextView) v.findViewById(R.id.menuItemPrice);
         }
 
-        private String countToString(){
-            // getItemCount but as a string
-            return "x" + Integer.toString(m_ItemCount);
-        }
-
-        public int getItemCount(){
-            // get the number of items in here
-            return m_ItemCount;
-        }
-        public MenuItem getItem(){
-            return m_cMenuItem;
-        }
-
-        @Override
-        public void onClick(View v) {
-            // when a MenuItemHolder (e.g. a row or a cell in the RecyclerView) is clicked
-            // view that MenuItem's detail through ViewMenuItemActivity
-            switch(v.getId()){
-                case R.id.addMenuItemButton:
-                    m_ItemCount += 1;
-                    break;
-                case R.id.subMenuItemButton:
-                    if(m_ItemCount > 0) {
-                        m_ItemCount -= 1;
-                    }
-                    break;
-            }
-            m_CountItemView.setText(this.countToString());
-        }
-
-        public void bindMenuItem(MenuItem MenuItem){
+        public void bindMenuItem(MenuItem menuItem){
             // bind a MenuItem object (and thus its data) into the MenuItem holder
             // the binded MenuItem's detail will be displayed in the cell/row of the RecyclerView
             // :param MenuItem: a MenuItem which will be displayed on the RecyclerView
-            m_cMenuItem = MenuItem;
-            m_cMenuItemNameView.setText(MenuItem.toString());
+            m_cMenuItem = menuItem;
+            m_cMenuItemNameView.setText(menuItem.getName());
+            m_cMenuItemDescriptionView.setText(menuItem.getDescription());
+            m_cMenuItemPriceView.setText(menuItem.getPriceAsString());
         }
     }
 
-    public MenuItemRecyclerAdapter(Restaurant restaurant){
+    public MenuItemRecyclerAdapter(ArrayList<MenuItem> menu){
         // initialize the adapter with its data set
-        m_MenuItemList = restaurant.getMenu(); // retrieve the menu from the restaurant
+        m_MenuItemList = menu;
         m_ViewHolderList = new ArrayList<>(); // keeps track of all of our view holders
+    }
+
+    public void updateMenuItem(MenuItem item, int position) {
+        m_MenuItemList.set(position, item);
+        notifyItemChanged(position);
     }
 
     @Override
@@ -109,15 +79,4 @@ public class MenuItemRecyclerAdapter
         return m_MenuItemList.size();
     }
 
-    public ArrayList<MenuItem> getMenuItemList(){
-        // returns an arraylist of menuitems based on the MenuItems in the adapter
-        // and the amount indicated in each viewholder
-        ArrayList<MenuItem> output = new ArrayList<>();
-        for(MenuItemRecyclerAdapter.MenuItemHolder holder : m_ViewHolderList){
-            for(int i = 0; i < holder.getItemCount(); i++) {
-                output.add(holder.getItem());
-            }
-        }
-        return output;
-    }
 }

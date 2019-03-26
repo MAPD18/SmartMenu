@@ -26,6 +26,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
+import ca.mapd.capstone.smartmenu.util.Constants;
+
 public class BluetoothManager implements BluetoothAdapter.LeScanCallback {
     private Context mContext;
     // for "client" mode only

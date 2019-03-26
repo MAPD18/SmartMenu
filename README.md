@@ -24,7 +24,7 @@ This application will manage restaurant menus and broadcast the information to c
 ### Team:
 
 - Jose Filho - 301005491 - jaraujo8@my.centennialcollege.ca
-- Liam Salehi - 300906321 - hsalehi2@my.centennialcollege.ca
+- Matin Salehi - 300906321 - hsalehi2@my.centennialcollege.ca
 - Rodrigo Silva - 300993648 - rvieirad@my.centennialcollege.ca
 - Thayllan Anacleto - 300973606 - tanaclet@my.centennialcollege.ca
 - Oguz Bayral - 301029119 - obayral@my.centennialcollege.ca
