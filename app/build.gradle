@@ -30,6 +30,9 @@ android {
             versionNameSuffix ".restaurant"
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {

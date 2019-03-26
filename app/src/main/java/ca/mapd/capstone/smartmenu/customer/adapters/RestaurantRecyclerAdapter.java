@@ -53,7 +53,7 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
             Context context = itemView.getContext();
             Intent intent = new Intent(itemView.getContext(), MenuListActivity.class);
             intent.putExtra(KEY_RESTAURANT_ID, m_cRestaurant.m_key);
-            intent.putExtra(KEY_RESTAURANT_NAME, m_cRestaurant.getName());
+            intent.putExtra(KEY_RESTAURANT_NAME, m_cRestaurant.getM_Name());
             itemView.getContext().startActivity(intent);
 
         }
