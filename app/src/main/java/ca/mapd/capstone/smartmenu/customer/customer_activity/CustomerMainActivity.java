@@ -16,9 +16,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +37,7 @@ import ca.mapd.capstone.smartmenu.activities.AuthAbstractActivity;
 import ca.mapd.capstone.smartmenu.customer.adapters.RestaurantRecyclerAdapter;
 import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
 import ca.mapd.capstone.smartmenu.matching.MatchingService;
+import ca.mapd.capstone.smartmenu.util.Constants;
 
 public class CustomerMainActivity extends AuthAbstractActivity {
     private ArrayList<Restaurant> m_RestaurantList; /*this holds the list of Restaurants which will be displayed*/
@@ -48,6 +51,7 @@ public class CustomerMainActivity extends AuthAbstractActivity {
     private LinearLayout m_LinearLayout;
     private ProgressBar m_ProgressBar;
     private TextView m_StatusMessageView;
+    private ToggleButton m_ScanningToggle;
 
     private static final int REQUEST_ENABLE_BT = 3456;
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 46193;
@@ -62,15 +66,16 @@ public class CustomerMainActivity extends AuthAbstractActivity {
 
 
         //init vars
-        m_RecyclerView = (RecyclerView) findViewById(R.id.restaurantRecyclerView);
+        m_RecyclerView = findViewById(R.id.restaurantRecyclerView);
         m_StatusMessageView = findViewById(R.id.statusMessageView);
         m_RecyclerView.setHasFixedSize(true);
         m_LinearLayoutManager = new LinearLayoutManager(this);
         m_RecyclerView.setLayoutManager(m_LinearLayoutManager);
         m_RestaurantList = new ArrayList<>();
         m_RestaurantKeyMap = new HashMap<>();
-        m_LinearLayout = (LinearLayout) findViewById(R.id.restaurantListLayout);
-        m_ProgressBar = (ProgressBar) findViewById(R.id.loadingBar);
+        m_LinearLayout = findViewById(R.id.restaurantListLayout);
+        m_ProgressBar = findViewById(R.id.loadingBar);
+        m_ScanningToggle = findViewById(R.id.scanningToggle);
         m_ProgressBar.setIndeterminate(true);
 
         //Firebase restaurants
@@ -84,13 +89,12 @@ public class CustomerMainActivity extends AuthAbstractActivity {
         if (user != null)
             this.setTitle(user.getDisplayName());
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-        } else
-            initBluetooth();
+        m_ScanningToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                toggleScanning(isChecked);
+            }
+        });
 
         menuBroadcastReceiver = new MenuBroadcastReceiver();
     }
@@ -120,6 +124,7 @@ public class CustomerMainActivity extends AuthAbstractActivity {
             m_Adapter.notifyDataSetChanged();
             m_ProgressBar.setVisibility(View.GONE);
             m_LinearLayout.setVisibility(View.VISIBLE);
+            m_StatusMessageView.setVisibility(View.GONE);
         }
 
         @Override
@@ -132,7 +137,6 @@ public class CustomerMainActivity extends AuthAbstractActivity {
     public void onResume(){
         //Firebase data restore
         if (m_RefList.isEmpty()) {
-            m_StatusMessageView.setText("No Restaurants Nearby.");
             m_ProgressBar.setVisibility(View.GONE);
         } else {
             m_StatusMessageView.setVisibility(View.GONE);
@@ -158,19 +162,29 @@ public class CustomerMainActivity extends AuthAbstractActivity {
     }
 
 
-    private void initBluetooth() {
-        // Initializes Bluetooth adapter.
-        final BluetoothManager bluetoothManager =
-                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        bluetoothAdapter = bluetoothManager.getAdapter();
-
-        // Ensures Bluetooth is available on the device and it is enabled. If not,
-        // displays a dialog requesting user permission to enable Bluetooth.
-        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+    private void toggleScanning(boolean isChecked) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
         } else {
-            MatchingService.startMatchingWithBluetooth(this, false);
+            // Initializes Bluetooth adapter.
+            final BluetoothManager bluetoothManager =
+                    (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+            bluetoothAdapter = bluetoothManager.getAdapter();
+
+            // Ensures Bluetooth is available on the device and it is enabled. If not,
+            // displays a dialog requesting user permission to enable Bluetooth.
+            if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            } else {
+                if (isChecked)
+                    MatchingService.startMatchingWithBluetooth(this, false);
+                else
+                    MatchingService.stopMatchingWithBluetooth(this);
+            }
         }
     }
 
@@ -182,7 +196,7 @@ public class CustomerMainActivity extends AuthAbstractActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initBluetooth();
+                    toggleScanning(true);
                 } else {
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
@@ -202,7 +216,9 @@ public class CustomerMainActivity extends AuthAbstractActivity {
             String restaurantId = intent.getStringExtra(KEY_MENU_ID);
             Integer position = m_RefListMap.get(restaurantId);
             if (position == null) {
-                Log.d("TEST", "New MenuId discovered: " + restaurantId);
+                Log.d(Constants.TAG, "New MenuId discovered: " + restaurantId);
+                m_StatusMessageView.setText("New Restaurant Discovered. Fetching details...");
+                m_BaseRestaurantRef.child(restaurantId).addValueEventListener(myListener);
                 m_RefList.add(m_BaseRestaurantRef.child(restaurantId));
                 position = m_RefList.size() - 1;
                 m_RefListMap.put(restaurantId, position);
