@@ -2,10 +2,14 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:id="@+id/my_profile"
+        android:title="Profile" />
+
     <item android:id="@+id/about_page"
         android:title="About"
         app:showAsAction="never" />
 
     <item android:id="@+id/log_out"
         android:title="Logout" />
+
 </menu>

@@ -9,14 +9,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import ca.mapd.capstone.smartmenu.R;
@@ -24,10 +22,8 @@ import ca.mapd.capstone.smartmenu.activities.AuthAbstractActivity;
 import ca.mapd.capstone.smartmenu.activities.LoginActivity;
 import ca.mapd.capstone.smartmenu.customer.AboutPageActivity;
 import ca.mapd.capstone.smartmenu.matching.MatchingService;
-import ca.mapd.capstone.smartmenu.restaurant.model.CachedRestaurantRepository;
 
 import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS;
-import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_CUSTOMER_SCAN_ON;
 import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_RESTAURANT_BROADCAST_ON;
 import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_RESTAURANT_ID;
 

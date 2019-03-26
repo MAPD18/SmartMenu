@@ -39,6 +39,9 @@
         <activity android:name=".customer.customer_activity.CustomerMainActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"/>
+        <activity android:name=".customer.customer_activity.CustomerProfileActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"/>
         <activity android:name=".customer.customer_activity.MenuListActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"/>

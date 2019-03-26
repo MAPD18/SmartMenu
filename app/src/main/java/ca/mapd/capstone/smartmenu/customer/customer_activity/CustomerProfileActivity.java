@@ -2,6 +2,7 @@ package ca.mapd.capstone.smartmenu.customer.customer_activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,19 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import ca.mapd.capstone.smartmenu.R;
+import ca.mapd.capstone.smartmenu.activities.AuthAbstractActivity;
 import ca.mapd.capstone.smartmenu.customer.models.Customer;
+import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
+
 import com.google.firebase.database.*;
 
-public class CustomerProfileActivity extends AppCompatActivity {
+public class CustomerProfileActivity extends AuthAbstractActivity {
 
-    private EditText txtEmail;
     private EditText txtName;
     private EditText txtAddress;
     private EditText txtPhoneNumber;
 
     private DatabaseReference databaseCustomer;
 
-    private String userEmail;
+    private String userId = "";
     private Customer customer;
 
     @Override
@@ -29,17 +32,19 @@ public class CustomerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_profile);
 
-        userEmail = getIntent().getStringExtra("userEmail");
+        this.setTitle("Profile");
+        if (m_Auth.getCurrentUser() != null)
+            userId = m_Auth.getCurrentUser().getUid();
 
-        databaseCustomer = FirebaseDatabase.getInstance().getReference(Customer.CUSTOMER_KEY);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
-        Query query = databaseCustomer
-                .orderByChild("m_Email")
-                .equalTo(userEmail);
+        databaseCustomer = FirebaseDatabase.getInstance().getReference(Customer.USER_PROFILE_KEY).child(userId);
+        databaseCustomer.addListenerForSingleValueEvent(valueEventListener);
 
-        query.addListenerForSingleValueEvent(valueEventListener);
-
-        txtEmail = findViewById(R.id.txtEmail);
         txtName = findViewById(R.id.txtName);
         txtAddress = findViewById(R.id.txtAddress);
         txtPhoneNumber = findViewById(R.id.txtPhoneNumber);
@@ -58,21 +63,17 @@ public class CustomerProfileActivity extends AppCompatActivity {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             if (dataSnapshot.exists()) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    customer = snapshot.getValue(Customer.class);
-                    if (customer != null && customer.toString() != null) {
-                        //FIXME: Research and fix the async problem.
-                        txtEmail.setText(customer.getM_Email());
-                        txtName.setText(customer.getM_Name());
-                        txtAddress.setText(customer.getM_Address());
-                        txtPhoneNumber.setText(customer.getM_PhoneNumber());
-                    }
+                customer = dataSnapshot.getValue(Customer.class);
+                if (customer != null) {
+                    //FIXME: Research and fix the async problem.
+                    txtName.setText(customer.getM_Name());
+                    txtAddress.setText(customer.getM_Address());
+                    txtPhoneNumber.setText(customer.getM_PhoneNumber());
                 }
             } else {
                 Customer customer = new Customer();
                 customer.setM_Id(databaseCustomer.push().getKey());
-                customer.setM_Email(userEmail);
-                saveCustomer(customer, null);
+                saveCustomer(customer);
             }
         }
 
@@ -102,18 +103,23 @@ public class CustomerProfileActivity extends AppCompatActivity {
             customer.setM_Name(txtName.getText().toString());
             customer.setM_Address(txtAddress.getText().toString());
             customer.setM_PhoneNumber(txtPhoneNumber.getText().toString());
-            saveCustomer(customer, userEmail);
+            saveCustomer(customer);
             Toast.makeText(this, "Customer profile updated!", Toast.LENGTH_LONG).show();
         }
     }
 
-    //TODO: Improve this method here with id, not e-mail!
-    private void saveCustomer(Customer customer, String email) {
-        if (email != null) {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Customer.CUSTOMER_KEY).child(customer.getM_Id());
+    private void saveCustomer(Customer customer) {
+        if (userId != null && !userId.isEmpty()) {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Customer.USER_PROFILE_KEY).child(userId);
             databaseReference.setValue(customer);
         } else {
             databaseCustomer.child(customer.getM_Id()).setValue(customer);
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 }

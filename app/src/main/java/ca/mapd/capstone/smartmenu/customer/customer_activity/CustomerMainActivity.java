@@ -48,7 +48,6 @@ import ca.mapd.capstone.smartmenu.util.Constants;
 
 import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS;
 import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_CUSTOMER_SCAN_ON;
-import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_RESTAURANT_BROADCAST_ON;
 
 public class CustomerMainActivity extends AuthAbstractActivity {
     private ArrayList<Restaurant> m_RestaurantList; /*this holds the list of Restaurants which will be displayed*/
@@ -263,6 +262,9 @@ public class CustomerMainActivity extends AuthAbstractActivity {
                 super.googleSignOut();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
+                return true;
+            case R.id.my_profile:
+                startActivity(new Intent(this, CustomerProfileActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

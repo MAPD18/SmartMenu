@@ -8,22 +8,20 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class Customer implements Parcelable{
-    public static final String CUSTOMER_KEY = "CUSTOMER";
+    public static final String USER_PROFILE_KEY = "USER_PROFILE";
     public String m_Id;
     public String m_Name;
     public String m_Address;
     public String m_PhoneNumber;
-    public String m_Email;
 
     public Customer(){
 
     }
 
-    public Customer(String name, String address, String phoneNumber, String email){
+    public Customer(String name, String address, String phoneNumber){
         m_Name = name;
         m_Address = address;
         m_PhoneNumber = phoneNumber;
-        m_Email = email;
     }
 
     public String getM_Id() { return m_Id; }
@@ -46,10 +44,6 @@ public class Customer implements Parcelable{
 
     public void setM_PhoneNumber(String m_PhoneNumber) { this.m_PhoneNumber = m_PhoneNumber; }
 
-    public String getM_Email() { return m_Email; }
-
-    public void setM_Email(String m_Email) { this.m_Email = m_Email; }
-
     @Override
     public int describeContents() {
         return 0;
@@ -59,7 +53,6 @@ public class Customer implements Parcelable{
         m_Name = in.readString();
         m_Address = in.readString();
         m_PhoneNumber = in.readString();
-        m_Email = in.readString();
     }
 
     @Override
@@ -67,7 +60,6 @@ public class Customer implements Parcelable{
         dest.writeString(m_Name);
         dest.writeString(m_Address);
         dest.writeString(m_PhoneNumber);
-        dest.writeString(m_Email);
     }
 
     public static final Creator<Customer> CREATOR = new Creator<Customer>(){
