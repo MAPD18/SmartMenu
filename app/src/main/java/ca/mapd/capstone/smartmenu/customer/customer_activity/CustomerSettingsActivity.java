@@ -237,6 +237,7 @@ public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
             // guidelines.
 
             bindPreferenceSummaryToValue(findPreference("amount_broadcast_restaurant"));
+            System.out.println("ok");
         }
 
         @Override
