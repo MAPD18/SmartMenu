@@ -135,4 +135,13 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+    <string name="pref_default_restaurant_broadcast">10</string>
+    <string name="pref_restaurant_broadcast_summary">Select the message capacity of the server</string>
+    <string name="pref_restaurant_broadcast_title">AMOUNT OF BROADCASTED RESTAURANTS</string>
+
+    <string name="pref_bluetooth_always_on_summary">Check if you always want your bluetooth to be on.</string>
+    <string name="pref_bluetooth_always_on_title">Bluetooth Always On Configuration</string>
+
+
 </resources>
