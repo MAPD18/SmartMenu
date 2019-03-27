@@ -266,6 +266,10 @@ public class CustomerMainActivity extends AuthAbstractActivity {
             case R.id.my_profile:
                 startActivity(new Intent(this, CustomerProfileActivity.class));
                 return true;
+            case R.id.my_settings:
+                startActivity(new Intent(this, CustomerSettingsActivity.class));
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
