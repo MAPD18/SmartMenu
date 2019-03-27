@@ -25,7 +25,7 @@ public class RestaurantProfileActivity extends AuthAbstractActivity {
 
     private String userId = "";
     private String userEmail;
-    private Restaurant restaurant;
+    private Restaurant restaurant = new Restaurant();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
