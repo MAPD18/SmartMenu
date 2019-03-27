@@ -1,11 +1,9 @@
 package ca.mapd.capstone.smartmenu;
 
-import android.text.Editable;
-import android.text.TextUtils;
 import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

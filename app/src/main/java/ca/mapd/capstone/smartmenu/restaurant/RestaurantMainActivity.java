@@ -22,6 +22,7 @@ import ca.mapd.capstone.smartmenu.activities.AuthAbstractActivity;
 import ca.mapd.capstone.smartmenu.activities.LoginActivity;
 import ca.mapd.capstone.smartmenu.customer.AboutPageActivity;
 import ca.mapd.capstone.smartmenu.matching.MatchingService;
+import ca.mapd.capstone.smartmenu.restaurant.activities.RestaurantProfileActivity;
 
 import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS;
 import static ca.mapd.capstone.smartmenu.util.Constants.MY_PREFS_RESTAURANT_BROADCAST_ON;
@@ -125,6 +126,9 @@ public class RestaurantMainActivity extends AuthAbstractActivity {
                 super.googleSignOut();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
+                return true;
+            case R.id.my_profile:
+                startActivity(new Intent(this, RestaurantProfileActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
