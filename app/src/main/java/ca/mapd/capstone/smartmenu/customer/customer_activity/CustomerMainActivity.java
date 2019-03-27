@@ -97,9 +97,7 @@ public class CustomerMainActivity extends AuthAbstractActivity {
         m_Adapter = new RestaurantRecyclerAdapter(m_RestaurantList);
         m_RecyclerView.setAdapter(m_Adapter);
 
-        FirebaseUser user = m_Auth.getCurrentUser();
-        if (user != null)
-            this.setTitle(user.getDisplayName());
+        this.setTitle("Scan Restaurants");
 
         final SharedPreferences sharedPref = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
 

@@ -25,7 +25,7 @@ public class CustomerProfileActivity extends AuthAbstractActivity {
     private DatabaseReference databaseCustomer;
 
     private String userId = "";
-    private Customer customer;
+    private Customer customer = new Customer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
