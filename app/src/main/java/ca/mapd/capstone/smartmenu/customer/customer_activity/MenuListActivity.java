@@ -2,6 +2,7 @@ package ca.mapd.capstone.smartmenu.customer.customer_activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,6 +47,11 @@ public class MenuListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_list);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         //init vars
         m_RecyclerView = (RecyclerView) findViewById(R.id.MenuRecyclerView);
@@ -144,5 +150,11 @@ public class MenuListActivity extends AppCompatActivity {
         m_MenuList.clear();
         m_MenuKeyMap.clear();
         super.onPause();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 }
