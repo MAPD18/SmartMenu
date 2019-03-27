@@ -105,8 +105,12 @@ public class RestaurantProfileActivity extends AuthAbstractActivity {
             restaurant.setM_Name(txtName.getText().toString());
             restaurant.setM_Address(txtAddress.getText().toString());
             restaurant.setM_PhoneNumber(txtPhoneNumber.getText().toString());
-            saveRestaurant(restaurant);
-            Toast.makeText(this, "Restaurant profile updated!", Toast.LENGTH_LONG).show();
+            if (restaurant.isPofileFormValid()) {
+                saveRestaurant(restaurant);
+                Toast.makeText(this, "Restaurant profile updated!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Restaurant profile form is not valid!", Toast.LENGTH_LONG).show();
+            }
 
         }
     }

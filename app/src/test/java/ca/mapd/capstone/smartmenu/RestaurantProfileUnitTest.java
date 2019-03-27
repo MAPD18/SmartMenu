@@ -1,6 +1,7 @@
 package ca.mapd.capstone.smartmenu;
 
 import ca.mapd.capstone.smartmenu.customer.models.Restaurant;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -13,37 +14,23 @@ import static org.junit.Assert.assertTrue;
 public class RestaurantProfileUnitTest {
 
     @Test
-    public void testUpdateRestaurantProfileFullfilled() {
-        String name = "Restaurant 1";
-        String address = "Test avenue";
-        String phoneNumber = "647 6617767";
-        assertTrue(updateRestaurantProfile(name, address, phoneNumber));
+    public void testRestaurantProfileUpdate() {
+        Restaurant restaurant =  new Restaurant("Restaurant 1", "Test avenue", "647 561 7767");
+        assertTrue(restaurant.isPofileFormValid());
     }
 
-    private boolean updateRestaurantProfile(String name, String address,
-                                            String phoneNumber) {
-        boolean formValid = true;
-        Restaurant restaurant = new Restaurant();
-        // Validate all the required fields in the form
-        if (name.trim().isEmpty()) {
-            //txtName.setError("Name is required!");
-            formValid = false;
-        }
-        if (address.trim().isEmpty()) {
-            //txtAddress.setError("Address size is required!");
-            formValid = false;
-        }
-        if (phoneNumber.trim().isEmpty()) {
-            //txtPhoneNumber.setError("Phone number is required!");
-            formValid = false;
-        }
-        if (formValid) {
-            restaurant.setM_Name(name.trim());
-            restaurant.setM_Address(address.trim());
-            restaurant.setM_PhoneNumber(phoneNumber.trim());
-            //saveRestaurant(restaurant, userEmail);
-            //Toast.makeText(this, "Restaurant profile updated!", Toast.LENGTH_LONG).show();
-        }
-        return formValid;
+    @Test
+    public void testRestaurantProfileUpdateWithEmptyFields(){
+        Restaurant restaurant =  new Restaurant("  ", "", "");
+        Assert.assertFalse(restaurant.isPofileFormValid());
+
+        Restaurant restaurant2 =  new Restaurant("Restaurant 1", "", "");
+        Assert.assertFalse(restaurant2.isPofileFormValid());
+
+        Restaurant restaurant3 =  new Restaurant("", "Test ave", "");
+        Assert.assertFalse(restaurant3.isPofileFormValid());
+
+        Restaurant restaurant4 =  new Restaurant("", "", "647 561 7767");
+        Assert.assertFalse(restaurant4.isPofileFormValid());
     }
 }

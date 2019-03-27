@@ -139,4 +139,11 @@ public class Restaurant implements Parcelable {
     }
 
 
+    public boolean isPofileFormValid() {
+        return m_Name != null && !m_Name.trim().isEmpty() &&
+                m_Address != null && !m_Address.trim().isEmpty() &&
+                m_PhoneNumber != null && !m_PhoneNumber.trim().isEmpty();
+
+    }
+
 }
