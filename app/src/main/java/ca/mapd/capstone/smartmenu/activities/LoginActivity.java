@@ -15,7 +15,7 @@ import ca.mapd.capstone.smartmenu.R;
 public class LoginActivity extends AuthAbstractActivity implements View.OnClickListener {
     /*
     * Starting point of the application, has buttons which lead to places
-    * Note that most essential activity will implement AuthAbstractActivity*/
+    * Note that most essential activity will implement AuthAbstractActivity */
     SignInButton googleSignInButton;
     Button loginButton;
     TextInputEditText login, password;
