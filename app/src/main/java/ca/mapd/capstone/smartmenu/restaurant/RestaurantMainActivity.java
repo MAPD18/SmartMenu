@@ -110,7 +110,7 @@ public class RestaurantMainActivity extends AuthAbstractActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.app_menu, menu);
+        inflater.inflate(R.menu.restaurant_menu, menu);
         return true;
     }
 

@@ -1,6 +1,7 @@
 package ca.mapd.capstone.smartmenu.customer;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +17,22 @@ public class AboutPageActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_about_page);
         m_BackButton = (Button) findViewById(R.id.aboutGoBackButton);
         m_BackButton.setOnClickListener(this);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
     }
 
     @Override
     public void onClick(View v) {
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 }
