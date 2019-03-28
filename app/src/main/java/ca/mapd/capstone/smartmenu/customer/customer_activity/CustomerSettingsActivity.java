@@ -137,7 +137,7 @@ public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}fdkhv dvgd sds cdd
      */
     @Override
     public boolean onIsMultiPane() {
