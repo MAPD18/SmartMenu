@@ -69,7 +69,8 @@ public class LoginActivity extends AuthAbstractActivity implements View.OnClickL
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.loginButton:
-                signInWithEmailAndPassword(login.getText().toString(), password.getText().toString());
+                signInWithEmailAndPassword(login.getText() != null ? login.getText().toString() : "",
+                        password.getText() != null? password.getText().toString() : "");
                 break;
             case R.id.signInButton:
                 googleSignIn();

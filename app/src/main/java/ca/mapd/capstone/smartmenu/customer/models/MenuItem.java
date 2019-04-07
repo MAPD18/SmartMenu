@@ -3,30 +3,35 @@ package ca.mapd.capstone.smartmenu.customer.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 
 @IgnoreExtraProperties
 public class MenuItem implements Parcelable{
+
+    public static final String KEY_NAME = "name";
+    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_PRICE = "price";
     public static final String MENU_KEY = "MENU";
-    public String m_Name;
-    public String m_Description;
-    public double m_Price;
+    @Exclude public String m_Name;
+    @Exclude public String m_Description;
+    @Exclude public double m_Price;
 
     public MenuItem(){
 
     }
 
-    public MenuItem(String name, String description, int price){
+    public MenuItem(String name, String description, double price){
         this.m_Name = name;
         this.m_Description = description;
         this.m_Price = price;
     }
 
-    protected MenuItem(Parcel in) {
+    public MenuItem(Parcel in) {
         m_Name = in.readString();
         m_Description = in.readString();
-        m_Price = in.readInt();
+        m_Price = in.readDouble();
     }
 
     public static final Creator<MenuItem> CREATOR = new Creator<MenuItem>() {
@@ -47,9 +52,7 @@ public class MenuItem implements Parcelable{
         return this.m_Name;
     }
 
-    public String getDescription() {
-        return m_Description;
-    }
+
 
     @Override
     public int describeContents() {
@@ -63,11 +66,32 @@ public class MenuItem implements Parcelable{
         dest.writeDouble(m_Price);
     }
 
+    @Exclude
     public String getPriceAsString() {
-        return "$" + m_Price;
+        return String.format("$%.2f", m_Price);
+    }
+
+    public double getPrice() {
+        return  m_Price;
     }
 
     public String getName() {
         return m_Name;
+    }
+
+    public String getDescription() {
+        return m_Description;
+    }
+
+    public void setName(String m_Name) {
+        this.m_Name = m_Name;
+    }
+
+    public void setDescription(String m_Description) {
+        this.m_Description = m_Description;
+    }
+
+    public void setPrice(double m_Price) {
+        this.m_Price = m_Price;
     }
 }
