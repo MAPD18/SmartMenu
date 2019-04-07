@@ -42,7 +42,7 @@ public class RestaurantProfileActivity extends AuthAbstractActivity {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        databaseRestaurant = FirebaseDatabase.getInstance().getReference(Restaurant.RESTAURANT_KEY).child(userId);
+        databaseRestaurant = FirebaseDatabase.getInstance().getReference(Restaurant.RESTAURANT_KEY).child(userEmail.replace(".", ""));
         databaseRestaurant.addListenerForSingleValueEvent(valueEventListener);
 
         txtEmail = findViewById(R.id.txtEmail);
@@ -72,7 +72,6 @@ public class RestaurantProfileActivity extends AuthAbstractActivity {
                 }
             } else {
                 Restaurant restaurant = new Restaurant();
-                restaurant.setM_Id(databaseRestaurant.push().getKey());
                 restaurant.setM_Email(userEmail);
                 saveRestaurant(restaurant);
             }
@@ -116,12 +115,7 @@ public class RestaurantProfileActivity extends AuthAbstractActivity {
     }
 
     private void saveRestaurant(Restaurant restaurant) {
-        if (userId != null && !userId.isEmpty()) {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Restaurant.RESTAURANT_KEY).child(userId);
-            databaseReference.setValue(restaurant);
-        } else {
-            databaseRestaurant.child(restaurant.getM_Id()).setValue(restaurant);
-        }
+        databaseRestaurant.setValue(restaurant);
     }
 
     @Override

@@ -36,7 +36,7 @@ class NotificationDecorator {
         }
     }
 
-    void displaySimpleNotification(String title, String contentText) {
+    void displaySimpleNotification(String title) {
         Intent intent = new Intent(context, CustomerMainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -50,9 +50,6 @@ class NotificationDecorator {
                     .setContentTitle(title)
                     .setContentIntent(contentIntent)
                     .setAutoCancel(true);
-
-            if (!contentText.isEmpty())
-                builder.setContentText(contentText);
 
             Notification notification = builder.build();
             notification.flags |= Notification.FLAG_AUTO_CANCEL;

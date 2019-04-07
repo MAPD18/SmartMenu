@@ -166,7 +166,7 @@ public class MyBluetoothGattCallback extends BluetoothGattCallback {
             intent.putExtra(CustomerMainActivity.MenuBroadcastReceiver.KEY_MENU_ID, menuId);
             mContext.sendBroadcast(intent);
             deviceProcessCompleted.append(bluetoothGatt.getDevice().getAddress().hashCode(), true);
-            notificationDecorator.displaySimpleNotification("New Menu Discovered nearby!", menuId);
+            notificationDecorator.displaySimpleNotification("New Menu Discovered nearby!");
         }
     }
 

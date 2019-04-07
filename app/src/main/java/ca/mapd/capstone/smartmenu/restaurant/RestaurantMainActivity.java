@@ -104,7 +104,7 @@ public class RestaurantMainActivity extends AuthAbstractActivity implements Menu
             }
         });
 
-        databaseReference= FirebaseDatabase.getInstance().getReference("MENU").child(m_Auth.getCurrentUser().getUid());
+        databaseReference= FirebaseDatabase.getInstance().getReference("MENU").child(m_Auth.getCurrentUser().getEmail().replace(".", ""));
         databaseReference.addChildEventListener(myListener);
         enableSwipeToDelete();
     }
@@ -141,7 +141,7 @@ public class RestaurantMainActivity extends AuthAbstractActivity implements Menu
     }
 
     private void updateRestaurantId() {
-        sharedPref.edit().putString(MY_PREFS_RESTAURANT_ID, m_Auth.getCurrentUser().getUid()).apply();
+        sharedPref.edit().putString(MY_PREFS_RESTAURANT_ID, m_Auth.getCurrentUser().getEmail().replace(".", "")).apply();
     }
 
     @Override
