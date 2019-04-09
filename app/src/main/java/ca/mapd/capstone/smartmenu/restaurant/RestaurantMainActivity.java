@@ -272,6 +272,9 @@ public class RestaurantMainActivity extends AuthAbstractActivity implements Menu
             case R.id.my_profile:
                 startActivity(new Intent(this, RestaurantProfileActivity.class));
                 return true;
+            case R.id.my_settings:
+                startActivity(new Intent(this, RestaurantSettingsActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

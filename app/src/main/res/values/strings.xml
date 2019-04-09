@@ -143,6 +143,7 @@
 
     <string name="pref_bluetooth_always_on_summary">Check if you always want your bluetooth to be on.</string>
     <string name="pref_bluetooth_always_on_title">Bluetooth Always On Configuration</string>
+    <string name="title_activity_restaurant_settings">Settings</string>
 
 
 </resources>
