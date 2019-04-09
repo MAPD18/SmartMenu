@@ -13,8 +13,8 @@
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="ca.mapd.capstone.smartmenu.restaurant.RestaurantSettingsActivity$DataSyncPreferenceFragment"
-        android:icon="@drawable/ic_sync_black_24dp"
-        android:title="@string/pref_header_data_sync" />
+        android:fragment="ca.mapd.capstone.smartmenu.restaurant.RestaurantSettingsActivity$RestaurantBluetoothPreferenceFragment"
+        android:icon="@drawable/ic_bluetooth_black_24dp"
+        android:title="@string/pref_header_bluetooth" />
 
 </preference-headers>

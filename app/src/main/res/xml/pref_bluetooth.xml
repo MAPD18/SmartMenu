@@ -1,0 +1,8 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="bluetooth_checkbox"
+        android:defaultValue="false"
+        android:summary="@string/pref_bluetooth_always_on_summary"
+        android:title="@string/pref_bluetooth_always_on_title"
+        />
+</PreferenceScreen>
