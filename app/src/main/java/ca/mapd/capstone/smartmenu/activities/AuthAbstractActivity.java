@@ -84,8 +84,8 @@ public abstract class AuthAbstractActivity
         // this method is called when the activity detects that the user is logged out
         // note that devs can override this method and specify custom behavior on logout
         Log.e(LOG_TAG, "OnNotLoggedIn is fired!");
-        Toast.makeText(this, getString(R.string.err_user_failed_to_authenticate), Toast.LENGTH_SHORT)
-        .show();
+//        Toast.makeText(this, getString(R.string.err_user_failed_to_authenticate), Toast.LENGTH_SHORT)
+//        .show();
         finish(); //exit out of the activity
     }
 

@@ -17,7 +17,7 @@ public class LoginActivity extends AuthAbstractActivity implements View.OnClickL
     * Starting point of the application, has buttons which lead to places
     * Note that most essential activity will implement AuthAbstractActivity */
     SignInButton googleSignInButton;
-    Button loginButton;
+    Button loginButton, signUpButton;
     TextInputEditText login, password;
     TextView errorMessage;
     ProgressBar progressBar;
@@ -38,6 +38,7 @@ public class LoginActivity extends AuthAbstractActivity implements View.OnClickL
     private void init() {
         googleSignInButton = findViewById(R.id.signInButton);
         loginButton = findViewById(R.id.loginButton);
+        signUpButton = findViewById(R.id.signUpButton);
         login = findViewById(R.id.login);
         password = findViewById(R.id.password);
         errorMessage = findViewById(R.id.errorMessage);
@@ -45,6 +46,7 @@ public class LoginActivity extends AuthAbstractActivity implements View.OnClickL
 
         googleSignInButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
+        signUpButton.setOnClickListener(this);
     }
 
     @Override
@@ -72,6 +74,9 @@ public class LoginActivity extends AuthAbstractActivity implements View.OnClickL
                 signInWithEmailAndPassword(login.getText() != null ? login.getText().toString() : "",
                         password.getText() != null? password.getText().toString() : "");
                 break;
+            case R.id.signUpButton:
+                startActivity(new Intent(this, NewUserActivity.class));
+                finish();
             case R.id.signInButton:
                 googleSignIn();
                 break;
