@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <CheckBoxPreference
+        android:key="bluetooth_checkbox"
+        android:defaultValue="false"
+        android:summary="@string/pref_bluetooth_always_on_summary"
+        android:title="@string/pref_bluetooth_always_on_title"
+        />
+    <ListPreference android:title="@string/pref_restaurant_broadcast_title"
+        android:summary="@string/pref_restaurant_broadcast_summary"
+        android:key="amount_broadcast_restaurant"
+        android:defaultValue="@string/pref_default_restaurant_broadcast"
+        android:entries="@array/listArray"
+        android:entryValues="@array/listValues" />
+
+
+</PreferenceScreen>

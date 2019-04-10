@@ -1,4 +1,4 @@
-package ca.mapd.capstone.smartmenu.customer.customer_activity;
+package ca.mapd.capstone.smartmenu.restaurant;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v7.app.ActionBar;
+import android.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
@@ -20,8 +20,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import ca.mapd.capstone.smartmenu.R;
-
-
 import java.util.List;
 
 /**
@@ -35,7 +33,7 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
+public class RestaurantSettingsActivity extends PreferenceActivity {
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -129,7 +127,7 @@ public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
     private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -150,7 +148,7 @@ public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers_customer, target);
+        loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
     /**
@@ -160,7 +158,7 @@ public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
-                || BluetoothPreferenceFragment.class.getName().equals(fragmentName)
+                || RestaurantBluetoothPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName);
     }
 
@@ -173,7 +171,7 @@ public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general_customer);
+            addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
@@ -181,13 +179,14 @@ public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("example_text"));
+            bindPreferenceSummaryToValue(findPreference("example_list"));
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), CustomerSettingsActivity.class));
+                startActivity(new Intent(getActivity(), RestaurantSettingsActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -203,7 +202,7 @@ public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_notification_customer);
+            addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
@@ -217,37 +216,35 @@ public class CustomerSettingsActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), CustomerSettingsActivity.class));
+                startActivity(new Intent(getActivity(), RestaurantSettingsActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
         }
     }
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class BluetoothPreferenceFragment extends PreferenceFragment {
+    public static class RestaurantBluetoothPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_bluetooth_customer);
+            addPreferencesFromResource(R.xml.pref_bluetooth);
             setHasOptionsMenu(true);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-
-            bindPreferenceSummaryToValue(findPreference("amount_broadcast_restaurant"));
-            System.out.println("ok");
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), CustomerSettingsActivity.class));
+                startActivity(new Intent(getActivity(), RestaurantSettingsActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
         }
     }
+
 }

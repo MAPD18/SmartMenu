@@ -21,8 +21,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".restaurant.activities.AddMenuItemActivity"
-            android:theme="@android:style/Theme.Holo.Dialog"></activity>
+        <activity
+            android:name=".restaurant.RestaurantSettingsActivity"
+            android:label="@string/title_activity_restaurant_settings"></activity>
+        <activity
+            android:name=".restaurant.activities.AddMenuItemActivity"
+            android:theme="@android:style/Theme.Holo.Dialog" />
         <activity
             android:name=".customer.customer_activity.CustomerSettingsActivity"
             android:label="@string/title_activity_customer_settings" />

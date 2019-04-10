@@ -36,6 +36,7 @@
     <string name="default_web_client_id_google">484410979258-7ppcvjd498nk35h3hm87lb59220a129v.apps.googleusercontent.com</string>
 
     <string name="title_activity_login">Sign in</string>
+    <string name="createAccount">Create account</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -129,21 +130,15 @@
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
     <string name="pref_header_bluetooth">Bluetooth</string>
-
     <string name="pref_title_new_message_notifications">New message notifications</string>
-
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
-
     <string name="pref_title_vibrate">Vibrate</string>
-
     <string name="pref_default_restaurant_broadcast">10</string>
     <string name="pref_restaurant_broadcast_summary">Select the message capacity of the server</string>
     <string name="pref_restaurant_broadcast_title">AMOUNT OF BROADCASTED RESTAURANTS</string>
-
     <string name="pref_bluetooth_always_on_summary">Check if you always want your bluetooth to be on.</string>
     <string name="pref_bluetooth_always_on_title">Bluetooth Always On Configuration</string>
-    <string name="createAccount">Create account</string>
-
+    <string name="title_activity_restaurant_settings">Settings</string>
 
 </resources>
